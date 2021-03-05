@@ -1,5 +1,5 @@
 {
-  "name": "my-gatsby-site",
+  "name": "xml-convert",
   "version": "1.0.0",
   "private": true,
   "description": "My Gatsby Site",
@@ -15,12 +15,20 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.2",
+    "bootstrap": "^4.6.0",
+    "formik": "^2.2.6",
     "gatsby": "^3.0.1",
     "gatsby-plugin-netlify-cms": "^5.0.0",
     "gatsby-plugin-sass": "^4.0.1",
     "netlify-cms-app": "^2.14.26",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "sass": "^1.32.8"
+    "react-dropzone": "^11.3.1",
+    "react-export-excel": "^0.5.3",
+    "react-xml-parser": "^1.1.8",
+    "reactstrap": "^8.9.0",
+    "sass": "^1.32.8",
+    "yup": "^0.32.9"
   }
 }
