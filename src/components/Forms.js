@@ -4,6 +4,7 @@ import UploadFiles from "../components/UploadFiles";
 import { Card, Button, FormGroup, Form, CardBody } from "reactstrap";
 import * as Yup from "yup";
 import { Formik } from "formik";
+import ExportAsExcel from "./ExportAsExcel";
 const Forms = () => {
   const validationSchema = Yup.object({
     files: Yup.string().required("Files can't be empty").nullable(true)
@@ -25,7 +26,7 @@ const Forms = () => {
           {(props) => (
             <Form onSubmit={props.handleSubmit}>
               <FormGroup>
-                <UploadFiles setFieldValue={props.setFieldValue} />
+                <UploadFiles />
                 {props.errors.files && props.touched.files ? (
                   <div className="text-danger">
                     <i className="fas fa-times ml-1" />
@@ -34,9 +35,9 @@ const Forms = () => {
                 ) : null}
               </FormGroup>
 
-              <Button type="submit" variant="outlined" color="primary">
+              {/* <Button type="submit" variant="outlined" color="primary">
                 Transform
-              </Button>
+              </Button> */}
             </Form>
           )}
         </Formik>

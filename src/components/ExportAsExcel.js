@@ -1,18 +1,18 @@
 import React from "react";
-// import ReactExport from "react-export-excel";
-// const ExcelFile = ReactExport.ExcelFile;
-// const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
-// const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
+import { CSVDownloader } from "react-papaparse";
 
-const ExportAsExcel = (props) => {
-  console.log(props.data);
+const ExportAsExcel = ({ data, fileName }) => {
+  console.log(data.map((fieldsName) => fieldsName.value));
+
+  let date = data.map((fieldsName) => fieldsName.value);
+  let fecha = date[2];
+  console.log(fecha);
+  //console.log(data.children.map((fieldsName) => fieldsName));
+  // console.log(fileName);
   return (
-    <div></div>
-    // <ExcelFile element={<button>Download excel</button>}>
-    //   <ExcelSheet data={props} name="Employees">
-    //     <ExcelColumn label="Name" value="name" />
-    //   </ExcelSheet>
-    // </ExcelFile>
+    <CSVDownloader data={[{ FECHA: fecha }]} type="button" bom="true">
+      Download
+    </CSVDownloader>
   );
 };
 export default ExportAsExcel;

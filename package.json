@@ -25,10 +25,11 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-dropzone": "^11.3.1",
-    "react-export-excel": "^0.5.3",
+    "react-papaparse": "^3.11.1",
     "react-xml-parser": "^1.1.8",
     "reactstrap": "^8.9.0",
     "sass": "^1.32.8",
+    "stream": "0.0.2",
     "yup": "^0.32.9"
   }
 }
