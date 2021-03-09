@@ -4,7 +4,7 @@ import UploadFiles from "../components/UploadFiles";
 import { Card, Button, FormGroup, Form, CardBody } from "reactstrap";
 import * as Yup from "yup";
 import { Formik } from "formik";
-import ExportAsExcel from "./ExportAsExcel";
+
 const Forms = () => {
   const validationSchema = Yup.object({
     files: Yup.string().required("Files can't be empty").nullable(true)

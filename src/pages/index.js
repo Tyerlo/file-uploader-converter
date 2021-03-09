@@ -1,6 +1,6 @@
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { Fragment } from "react";
+import React from "react";
 
 import Forms from "../components/Forms";
 import Layout from "../components/Layout";

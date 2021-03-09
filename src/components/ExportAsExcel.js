@@ -2,15 +2,21 @@ import React from "react";
 import { CSVDownloader } from "react-papaparse";
 
 const ExportAsExcel = ({ data, fileName }) => {
-  console.log(data.map((fieldsName) => fieldsName.value));
-
   let date = data.map((fieldsName) => fieldsName.value);
+
   let fecha = date[2];
-  console.log(fecha);
-  //console.log(data.children.map((fieldsName) => fieldsName));
-  // console.log(fileName);
+
+  let input = fileName.toString();
+
+  let splitFileName = input.split(".");
+
   return (
-    <CSVDownloader data={[{ FECHA: fecha }]} type="button" bom="true">
+    <CSVDownloader
+      data={[{ FECHA: fecha }]}
+      filename={splitFileName[0]}
+      type="button"
+      bom="true"
+    >
       Download
     </CSVDownloader>
   );
