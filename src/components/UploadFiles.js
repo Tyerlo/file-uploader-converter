@@ -55,7 +55,6 @@ const UploadFiles = () => {
     files.map((file) => {
       return <li key={file.path + "-key"}>{file.name}</li>;
     });
-  console.log(fileContent);
   return (
     <Fragment>
       <section>
