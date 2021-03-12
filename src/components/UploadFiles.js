@@ -3,18 +3,10 @@ import "./UploadFiles.css";
 import { useDropzone } from "react-dropzone";
 import ExportAsExcel from "./ExportAsExcel";
 
-const readFileContents = (setFileContent, file) => {
+const readFileContents = (file) => {
   const reader = new FileReader();
   return new Promise((resolve, reject) => {
     reader.onload = async () => {
-      var XMLParser = require("react-xml-parser");
-      const input = reader.result;
-
-      const regex = /<\!\[CDATA\[|\]\]>/g;
-      const xml = input.replace(regex, "");
-      let parseXML = new XMLParser().parseFromString(xml);
-
-      setFileContent(parseXML);
       resolve(reader.result);
     };
     reader.onerror = reject;
@@ -23,15 +15,22 @@ const readFileContents = (setFileContent, file) => {
   });
 };
 //TODO fix so it can read all files uploading
-const readAllFiles = async (allFiles) => {
+const readAllFiles = async (allFiles, setFileContent) => {
   const results = await Promise.all(
     allFiles.map(async (file) => {
-      const fileContents = await this.readFileContents(file);
-      return fileContents;
+      return await readFileContents(file);
     })
   );
-  console.log("result", results);
-  return results;
+
+  var XMLParser = require("react-xml-parser");
+
+  const input = results.toString();
+
+  const regex = /<\!\[CDATA\[|\]\]>/g;
+  const xml = input.replace(regex, "");
+  let parseXML = new XMLParser().parseFromString(xml);
+  console.log(input);
+  setFileContent(parseXML);
 };
 
 const UploadFiles = () => {
@@ -42,9 +41,7 @@ const UploadFiles = () => {
     const allFiles = [...files, ...acceptedFiles];
     setFilesUpload(allFiles);
 
-    acceptedFiles.map((file) => {
-      return readFileContents(setFileContent, file);
-    });
+    return readAllFiles(allFiles, setFileContent);
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -56,8 +53,9 @@ const UploadFiles = () => {
   const fileName =
     files.length > 0 &&
     files.map((file) => {
-      return file.name;
+      return <li key={file.path + "-key"}>{file.name}</li>;
     });
+  console.log(fileContent);
   return (
     <Fragment>
       <section>
@@ -70,15 +68,13 @@ const UploadFiles = () => {
         <em>(Only *.xml will be accepted)</em>
         <aside>
           <h4>Files</h4>
-          <ul>
-            {fileName ? <li key={fileName + "-key"}>{fileName}</li> : null}
-          </ul>
+          <ul>{fileName ? fileName : null}</ul>
         </aside>
       </section>
       {typeof fileContent !== "undefined" &&
       fileContent &&
       fileContent.children ? (
-        <ExportAsExcel data={fileContent.children} fileName={fileName} />
+        <ExportAsExcel data={fileContent.children} />
       ) : null}
     </Fragment>
   );
