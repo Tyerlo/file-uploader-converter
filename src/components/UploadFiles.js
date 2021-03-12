@@ -3,10 +3,18 @@ import "./UploadFiles.css";
 import { useDropzone } from "react-dropzone";
 import ExportAsExcel from "./ExportAsExcel";
 
-const readFileContents = (file) => {
+const readFileContents = (file, setFileContent) => {
   const reader = new FileReader();
   return new Promise((resolve, reject) => {
-    reader.onload = async () => {
+    reader.onload = async (event) => {
+      const files = event.target.result;
+
+      var convert = require("xml-js");
+      const regex = /<\!\[CDATA\[|\]\]>/g;
+      const xml = files.replace(regex, "");
+      let result = convert.xml2json(xml, { compact: true, spaces: 4 });
+
+      setFileContent(JSON.parse(result));
       resolve(reader.result);
     };
     reader.onerror = reject;
@@ -18,19 +26,11 @@ const readFileContents = (file) => {
 const readAllFiles = async (allFiles, setFileContent) => {
   const results = await Promise.all(
     allFiles.map(async (file) => {
-      return await readFileContents(file);
+      return await readFileContents(file, setFileContent);
     })
   );
-
-  var XMLParser = require("react-xml-parser");
-
-  const input = results.toString();
-
-  const regex = /<\!\[CDATA\[|\]\]>/g;
-  const xml = input.replace(regex, "");
-  let parseXML = new XMLParser().parseFromString(xml);
-  console.log(input);
-  setFileContent(parseXML);
+  console.log(results);
+  return results;
 };
 
 const UploadFiles = () => {
@@ -53,7 +53,7 @@ const UploadFiles = () => {
   const fileName =
     files.length > 0 &&
     files.map((file) => {
-      return <li key={file.path + "-key"}>{file.name}</li>;
+      return <li key={file.name + "-key"}>{file.name}</li>;
     });
   return (
     <Fragment>
@@ -70,10 +70,8 @@ const UploadFiles = () => {
           <ul>{fileName ? fileName : null}</ul>
         </aside>
       </section>
-      {typeof fileContent !== "undefined" &&
-      fileContent &&
-      fileContent.children ? (
-        <ExportAsExcel data={fileContent.children} />
+      {typeof fileContent !== "undefined" && fileContent.length > 0 ? (
+        <ExportAsExcel data={fileContent} />
       ) : null}
     </Fragment>
   );
