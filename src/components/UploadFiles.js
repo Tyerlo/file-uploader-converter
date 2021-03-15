@@ -14,7 +14,7 @@ const readFileContents = (file, setFileContent) => {
       const xml = files.replace(regex, "");
       let result = convert.xml2json(xml, { compact: true, spaces: 4 });
 
-      setFileContent(JSON.parse(result));
+      setFileContent((values) => values.concat(JSON.parse(result)));
       resolve(reader.result);
     };
     reader.onerror = reject;
@@ -29,7 +29,7 @@ const readAllFiles = async (allFiles, setFileContent) => {
       return await readFileContents(file, setFileContent);
     })
   );
-  console.log(results);
+
   return results;
 };
 
