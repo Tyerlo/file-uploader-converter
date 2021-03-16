@@ -1,5 +1,5 @@
 import React from "react";
-import { CSVDownloader } from "react-papaparse";
+import { CSVDownloader, jsonToCSV } from "react-papaparse";
 import dateFormat from "dateformat";
 dateFormat.i18n = {
   monthNames: [
@@ -29,21 +29,23 @@ dateFormat.i18n = {
     "DICIEMBRE"
   ]
 };
-function extractToString(conVertString) {
-  return conVertString.toString();
-}
+// function extractToString(conVertString) {
+//   return conVertString.toString();
+// }
 
-function splitFactura(estabToString, ptoEmiToString) {
-  return estabToString + "-" + ptoEmiToString + "-";
-}
+// function splitFactura(estabToString, ptoEmiToString) {
+//   return estabToString + "-" + ptoEmiToString + "-";
+// }
 
 const ExportAsExcel = ({ data }) => {
-  let date = (data || {}).autorizacion;
-  let fecha = (date || {}).fechaAutorizacion;
-  let fechaText = (fecha || {})._text;
+  data.map((file) => {
+    let date = (file || {}).autorizacion;
+    let fecha = (date || {}).fechaAutorizacion;
+    let fechaText = (fecha || {})._text;
 
-  let parseDate = dateFormat(fechaText, "dd/mm/yyyy");
-  let parseMonth = dateFormat(fechaText, "mmmm");
+    let parseDate = dateFormat(fechaText, "dd/mm/yyyy");
+    let parseMonth = dateFormat(fechaText, "mmmm");
+  });
 
   //TODO fix so it can read all files and download it correctly.
   //TODO fix so it can print correct data in correct column
@@ -56,23 +58,34 @@ const ExportAsExcel = ({ data }) => {
 
   return (
     <div className="d-flex justify-content-center align-items-center">
-      <CSVDownloader
-        // data={[
-        //   {
-        //     FECHA: parseDate,
-        //     MES: parseMonth,
-        //     "N° DE FACTURA": facturaNumero,
-        //     "RUC PROVEDOR": numeroRuc.toString(),
-        //     PROVEDOR: empresaNombre
-        //   }
-        // ]}
-        filename="filename"
-        type="button"
-        className="btn btn-primary"
-        bom="true"
-      >
-        Download
-      </CSVDownloader>
+      {data.map((file) => {
+        let date = (file || {}).autorizacion;
+        let fecha = (date || {}).fechaAutorizacion;
+        let fechaText = (fecha || {})._text;
+
+        let parseDate = dateFormat(fechaText, "dd/mm/yyyy");
+        let parseMonth = dateFormat(fechaText, "mmmm");
+
+        const csv = jsonToCSV({
+          fields: ["FECHA", "MES", "N° DE FACTURA", "RUC PROVEEDOR"],
+          data: [[parseDate, parseMonth]]
+        });
+
+        return (
+          <CSVDownloader
+            header={false}
+            delimeter={true}
+            transformHeader={true}
+            data={csv}
+            filename="filename"
+            type="button"
+            className="btn btn-primary"
+            bom="true"
+          >
+            Download
+          </CSVDownloader>
+        );
+      })}
     </div>
   );
 };
