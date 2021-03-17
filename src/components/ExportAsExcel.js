@@ -1,6 +1,6 @@
 import React from "react";
-import { CSVDownloader, jsonToCSV } from "react-papaparse";
 import dateFormat from "dateformat";
+import { CSVLink } from "react-csv";
 dateFormat.i18n = {
   monthNames: [
     "ENE",
@@ -36,17 +36,18 @@ dateFormat.i18n = {
 // function splitFactura(estabToString, ptoEmiToString) {
 //   return estabToString + "-" + ptoEmiToString + "-";
 // }
+function transformData(file) {
+  const date = file.autorizacion.fechaAutorizacion._text;
+  let parseDate = dateFormat(date, "dd/mm/yyyy");
+  let parseMonth = dateFormat(date, "mmmm");
+
+  return {
+    FECHA: `${parseDate}`,
+    MES: `${parseMonth}`
+  };
+}
 
 const ExportAsExcel = ({ data }) => {
-  data.map((file) => {
-    let date = (file || {}).autorizacion;
-    let fecha = (date || {}).fechaAutorizacion;
-    let fechaText = (fecha || {})._text;
-
-    let parseDate = dateFormat(fechaText, "dd/mm/yyyy");
-    let parseMonth = dateFormat(fechaText, "mmmm");
-  });
-
   //TODO fix so it can read all files and download it correctly.
   //TODO fix so it can print correct data in correct column
 
@@ -58,34 +59,15 @@ const ExportAsExcel = ({ data }) => {
 
   return (
     <div className="d-flex justify-content-center align-items-center">
-      {data.map((file) => {
-        let date = (file || {}).autorizacion;
-        let fecha = (date || {}).fechaAutorizacion;
-        let fechaText = (fecha || {})._text;
-
-        let parseDate = dateFormat(fechaText, "dd/mm/yyyy");
-        let parseMonth = dateFormat(fechaText, "mmmm");
-
-        const csv = jsonToCSV({
-          fields: ["FECHA", "MES", "N° DE FACTURA", "RUC PROVEEDOR"],
-          data: [[parseDate, parseMonth]]
-        });
-
-        return (
-          <CSVDownloader
-            header={false}
-            delimeter={true}
-            transformHeader={true}
-            data={csv}
-            filename="filename"
-            type="button"
-            className="btn btn-primary"
-            bom="true"
-          >
-            Download
-          </CSVDownloader>
-        );
-      })}
+      <CSVLink
+        // headers={headers}
+        data={data.map((file) => {
+          return transformData(file);
+        })}
+        className="btn btn-primary"
+      >
+        Download
+      </CSVLink>
     </div>
   );
 };
