@@ -29,21 +29,32 @@ dateFormat.i18n = {
     "DICIEMBRE"
   ]
 };
-// function extractToString(conVertString) {
-//   return conVertString.toString();
-// }
-
-// function splitFactura(estabToString, ptoEmiToString) {
-//   return estabToString + "-" + ptoEmiToString + "-";
-// }
 function transformData(file) {
   const date = file.autorizacion.fechaAutorizacion._text;
   let parseDate = dateFormat(date, "dd/mm/yyyy");
   let parseMonth = dateFormat(date, "mmmm");
 
+  const infoTributaria = file.autorizacion.comprobante.factura.infoTributaria;
+  let estab = infoTributaria.estab._text;
+  let ptoEmi = infoTributaria.ptoEmi._text;
+  let secuencial = infoTributaria.secuencial._text;
+
+  console.log(infoTributaria);
+  let ruc = infoTributaria.ruc._text;
+  let empresaNombre = infoTributaria.nombreComercial._text;
+
+  let nombreComercial = empresaNombre.replace("&amp;", "&");
+
+  let factura = estab + "-" + ptoEmi + "-";
+
+  let facturaNumero = factura + secuencial;
+
   return {
     FECHA: `${parseDate}`,
-    MES: `${parseMonth}`
+    MES: `${parseMonth}`,
+    "N° DE FACTURA ": `${facturaNumero}`,
+    "RUC PROVEEDOR": `${ruc}`,
+    PROVEDOR: `${nombreComercial}`
   };
 }
 
@@ -51,16 +62,9 @@ const ExportAsExcel = ({ data }) => {
   //TODO fix so it can read all files and download it correctly.
   //TODO fix so it can print correct data in correct column
 
-  // let factura = splitFactura(estabToString, ptoEmiToString);
-
-  // let facturaNumero = factura + secuencial;
-
-  // let empresaNombre = nombreComercial.toString().replace("&amp;", "&");
-
   return (
     <div className="d-flex justify-content-center align-items-center">
       <CSVLink
-        // headers={headers}
         data={data.map((file) => {
           return transformData(file);
         })}
