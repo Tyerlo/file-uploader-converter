@@ -30,31 +30,55 @@ dateFormat.i18n = {
   ]
 };
 function transformData(file) {
-  const date = file.autorizacion.fechaAutorizacion._text;
+  let date = file
+    ? ((file.autorizacion || {}).fechaAutorizacion || {})._text
+    : null;
+
   let parseDate = dateFormat(date, "dd/mm/yyyy");
   let parseMonth = dateFormat(date, "mmmm");
 
-  const infoTributaria = file.autorizacion.comprobante.factura.infoTributaria;
-  let estab = infoTributaria.estab._text;
-  let ptoEmi = infoTributaria.ptoEmi._text;
-  let secuencial = infoTributaria.secuencial._text;
+  const infoTributaria = file
+    ? (((file.autorizacion || {}).comprobante || {}).factura || {})
+        .infoTributaria || {}
+    : null;
+
+  let estab = infoTributaria
+    ? ((infoTributaria || {}).estab || {})._text || {}
+    : null;
+  let ptoEmi = infoTributaria
+    ? ((infoTributaria || {}).ptoEmi || {})._text || {}
+    : null;
+  let secuencial = infoTributaria
+    ? ((infoTributaria || {}).secuencial || {})._text || {}
+    : null;
+
+  let ruc = infoTributaria
+    ? ((infoTributaria || {}).ruc || {})._text || {}
+    : null;
+  let empresaNombre = infoTributaria
+    ? ((infoTributaria || {}).nombreComercial || {})._text || null
+    : null;
+
+  let razonSocial = infoTributaria
+    ? ((infoTributaria || {}).razonSocial || {})._text || {}
+    : null;
 
   console.log(infoTributaria);
-  let ruc = infoTributaria.ruc._text;
-  let empresaNombre = infoTributaria.nombreComercial._text;
-
-  let nombreComercial = empresaNombre.replace("&amp;", "&");
 
   let factura = estab + "-" + ptoEmi + "-";
 
   let facturaNumero = factura + secuencial;
-
+  console.log(empresaNombre);
   return {
     FECHA: `${parseDate}`,
     MES: `${parseMonth}`,
     "N° DE FACTURA ": `${facturaNumero}`,
     "RUC PROVEEDOR": `${ruc}`,
-    PROVEDOR: `${nombreComercial}`
+    PROVEDOR: `${
+      empresaNombre !== null && empresaNombre !== undefined
+        ? empresaNombre.replace("&amp;", "&")
+        : razonSocial
+    }`
   };
 }
 
