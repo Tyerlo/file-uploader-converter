@@ -2,6 +2,7 @@ import React, { Fragment, useCallback, useState } from "react";
 import "./UploadFiles.css";
 import { useDropzone } from "react-dropzone";
 import ExportAsExcel from "./ExportAsExcel";
+import SaveFileName from "./SaveFileName";
 
 const readFileContents = (file, setFileContent) => {
   const reader = new FileReader();
@@ -22,7 +23,7 @@ const readFileContents = (file, setFileContent) => {
     reader.readAsText(file);
   });
 };
-//TODO fix so it can read all files uploading
+//TODO fix an progress bar on the percent
 const readAllFiles = async (allFiles, setFileContent) => {
   const results = await Promise.all(
     allFiles.map(async (file) => {
@@ -55,6 +56,8 @@ const UploadFiles = () => {
     files.map((file) => {
       return <li key={file.name + "-key"}>{file.name}</li>;
     });
+
+  console.log(fileContent);
   return (
     <Fragment>
       <section>
@@ -70,8 +73,9 @@ const UploadFiles = () => {
           <ul>{fileName ? fileName : null}</ul>
         </aside>
       </section>
+
       {typeof fileContent !== "undefined" && fileContent.length > 0 ? (
-        <ExportAsExcel data={fileContent} />
+        <SaveFileName data={fileContent} />
       ) : null}
     </Fragment>
   );

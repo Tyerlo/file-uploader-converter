@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import dateFormat from "dateformat";
 import { CSVLink } from "react-csv";
+import { Form, Button } from "reactstrap";
+
 dateFormat.i18n = {
   monthNames: [
     "ENE",
@@ -63,17 +65,17 @@ function transformData(file) {
     ? ((infoTributaria || {}).razonSocial || {})._text || {}
     : null;
 
-  console.log(infoTributaria);
+  // console.log(infoTributaria);
 
-  let factura = estab + "-" + ptoEmi + "-";
+  let factura = estab && ptoEmi ? estab + "-" + ptoEmi + "-" : null;
 
   let facturaNumero = factura + secuencial;
-  console.log(empresaNombre);
+
   return {
     FECHA: `${parseDate}`,
     MES: `${parseMonth}`,
-    "N° DE FACTURA ": `${facturaNumero}`,
-    "RUC PROVEEDOR": `${ruc}`,
+    "N° DE FACTURA": `${facturaNumero}`,
+    "RUC PROVEEDOR": `'${ruc}`,
     PROVEDOR: `${
       empresaNombre !== null && empresaNombre !== undefined
         ? empresaNombre.replace("&amp;", "&")
@@ -82,20 +84,32 @@ function transformData(file) {
   };
 }
 
-const ExportAsExcel = ({ data }) => {
-  //TODO fix so it can read all files and download it correctly.
-  //TODO fix so it can print correct data in correct column
+const ExportAsExcel = ({ data, fileName, resetForm, handleSubmit }) => {
+  const clearForm = () => {};
 
   return (
-    <div className="d-flex justify-content-center align-items-center">
-      <CSVLink
-        data={data.map((file) => {
-          return transformData(file);
-        })}
-        className="btn btn-primary"
-      >
-        Download
-      </CSVLink>
+    <div>
+      <Form onSubmit={handleSubmit}>
+        {fileName.length > 0 ? (
+          <CSVLink
+            //  onClick={clearForm}
+            filename={fileName}
+            type="submit"
+            enclosingCharacter={`"`}
+            separator={";"}
+            data={data.map((file) => {
+              return transformData(file);
+            })}
+            className="btn btn-primary"
+          >
+            Save as
+          </CSVLink>
+        ) : (
+          <Button color="primary" disabled>
+            Save as
+          </Button>
+        )}
+      </Form>
     </div>
   );
 };
