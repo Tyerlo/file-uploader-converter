@@ -1,7 +1,6 @@
 import React, { Fragment, useCallback, useState } from "react";
 import "./UploadFiles.css";
 import { useDropzone } from "react-dropzone";
-import ExportAsExcel from "./ExportAsExcel";
 import SaveFileName from "./SaveFileName";
 
 const readFileContents = (file, setFileContent) => {
@@ -57,7 +56,6 @@ const UploadFiles = () => {
       return <li key={file.name + "-key"}>{file.name}</li>;
     });
 
-  console.log(fileContent);
   return (
     <Fragment>
       <section>
@@ -75,7 +73,11 @@ const UploadFiles = () => {
       </section>
 
       {typeof fileContent !== "undefined" && fileContent.length > 0 ? (
-        <SaveFileName data={fileContent} />
+        <SaveFileName
+          data={fileContent}
+          setFilesUpload={setFilesUpload}
+          setFileContent={setFileContent}
+        />
       ) : null}
     </Fragment>
   );

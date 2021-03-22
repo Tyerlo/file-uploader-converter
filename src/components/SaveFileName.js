@@ -12,7 +12,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { Fragment } from "react";
 
-const SaveFileName = ({ props, data }) => {
+const SaveFileName = ({ data, setFilesUpload, setFileContent }) => {
   const [modal, setModal] = useState(false);
 
   const [charLeft, setCharsLeft] = useState(25);
@@ -28,13 +28,7 @@ const SaveFileName = ({ props, data }) => {
 
   return (
     <div className="d-flex justify-content-center align-items-center">
-      <Formik
-        validationSchema={validationSchema}
-        initialValues={intialValues}
-        onSubmit={(values) => {
-          console.log(values);
-        }}
-      >
+      <Formik validationSchema={validationSchema} initialValues={intialValues}>
         {(props) => (
           <Fragment>
             <Button color="primary" onClick={toggle}>
@@ -59,12 +53,15 @@ const SaveFileName = ({ props, data }) => {
                     {props.errors.fileName}
                   </div>
                 ) : null}
-                <p>
+                <p className="float-right">
                   {props.values.fileName.length}/{charLeft}
                 </p>
               </ModalBody>
               <ModalFooter>
                 <ExportAsExcel
+                  setFileContent={setFileContent}
+                  setFilesUpload={setFilesUpload}
+                  setModal={setModal}
                   data={data}
                   handleSubmit={props.handleSubmit}
                   fileName={props.values.fileName}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import dateFormat from "dateformat";
 import { CSVLink } from "react-csv";
 import { Form, Button } from "reactstrap";
@@ -84,15 +84,28 @@ function transformData(file) {
   };
 }
 
-const ExportAsExcel = ({ data, fileName, resetForm, handleSubmit }) => {
-  const clearForm = () => {};
+const ExportAsExcel = ({
+  data,
+  fileName,
+  setModal,
+  handleSubmit,
+  setFilesUpload,
+  setFileContent
+}) => {
+  const clearForm = () => {
+    setFilesUpload([]);
+    setFileContent([]);
+    setModal((closeModal) => !closeModal);
+  };
 
   return (
     <div>
       <Form onSubmit={handleSubmit}>
         {fileName.length > 0 ? (
           <CSVLink
-            //  onClick={clearForm}
+            onClick={() => {
+              return clearForm();
+            }}
             filename={fileName}
             type="submit"
             enclosingCharacter={`"`}
