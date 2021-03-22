@@ -15,7 +15,7 @@ import { Fragment } from "react";
 const SaveFileName = ({ data, setFilesUpload, setFileContent }) => {
   const [modal, setModal] = useState(false);
 
-  const [charLeft, setCharsLeft] = useState(25);
+  const [charLeft] = useState(25);
 
   const toggle = () => setModal(!modal);
 
@@ -26,6 +26,11 @@ const SaveFileName = ({ data, setFilesUpload, setFileContent }) => {
     fileName: ""
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === " ") {
+      e.preventDefault();
+    }
+  };
   return (
     <div className="d-flex justify-content-center align-items-center">
       <Formik validationSchema={validationSchema} initialValues={intialValues}>
@@ -43,6 +48,7 @@ const SaveFileName = ({ data, setFilesUpload, setFileContent }) => {
                   minLength={1}
                   onChange={props.handleChange}
                   value={props.values.fileName}
+                  onKeyDown={handleKeyDown}
                   onBlur={props.handleBlur}
                   maxLength={25}
                   placeholder="Name the file"
