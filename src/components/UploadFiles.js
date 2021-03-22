@@ -44,7 +44,7 @@ const UploadFiles = () => {
     return readAllFiles(allFiles, setFileContent);
   }, []);
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const { fileRejections, getRootProps, getInputProps } = useDropzone({
     onDrop,
     maxFiles: 100,
     accept: "text/xml"
@@ -68,6 +68,13 @@ const UploadFiles = () => {
         <em>(Only *.xml will be accepted)</em>
         <aside>
           <h4>Files</h4>
+          {fileRejections.length > 100 ? (
+            <p className="text-danger">
+              <i className="fas fa-times mr-1" />
+              You have uploaded more than {fileRejections.length} files, the
+              limit is only 100 files files to upload
+            </p>
+          ) : null}
           <ul>{fileName ? fileName : null}</ul>
         </aside>
       </section>
