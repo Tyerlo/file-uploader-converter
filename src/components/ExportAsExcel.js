@@ -44,6 +44,11 @@ function transformData(file) {
         .infoTributaria || {}
     : null;
 
+  const infoFactura = file
+    ? (((file.autorizacion || {}).comprobante || {}).factura || {})
+        .infoFactura || {}
+    : null;
+
   let estab = infoTributaria
     ? ((infoTributaria || {}).estab || {})._text || {}
     : null;
@@ -65,8 +70,31 @@ function transformData(file) {
     ? ((infoTributaria || {}).razonSocial || {})._text || {}
     : null;
 
-  // console.log(infoTributaria);
+  let subTotal = infoFactura
+    ? ((infoFactura || {}).totalSinImpuestos || {})._text || {}
+    : null;
 
+  let tarifa = infoFactura
+    ? (
+        (((infoFactura || {}).totalConImpuestos || {}).totalImpuesto || {})
+          .tarifa || {}
+      )._text
+    : null;
+
+  let valor = infoFactura
+    ? (
+        (((infoFactura || {}).totalConImpuestos || {}).totalImpuesto || {})
+          .valor || {}
+      )._text
+    : null;
+
+    let total = infoFactura
+    ? (
+        (((infoFactura || {}).pagos || {}).pago || {})
+          .total || {}
+      )._text
+    : null;
+ 
   let factura = estab && ptoEmi ? estab + "-" + ptoEmi + "-" : null;
 
   let facturaNumero = factura + secuencial;
@@ -80,7 +108,11 @@ function transformData(file) {
       empresaNombre !== null && empresaNombre !== undefined
         ? empresaNombre.replace("&amp;", "&")
         : razonSocial
-    }`
+    }`,
+    SUBTOTAL: `${subTotal}`,
+    "12%": `${valor}`,
+    "0%": `${tarifa}`,
+    "TOTAL": `${total}`
   };
 }
 
