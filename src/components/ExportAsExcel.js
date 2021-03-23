@@ -88,16 +88,17 @@ function transformData(file) {
       )._text
     : null;
 
-    let total = infoFactura
-    ? (
-        (((infoFactura || {}).pagos || {}).pago || {})
-          .total || {}
-      )._text
+  let total = infoFactura
+    ? ((((infoFactura || {}).pagos || {}).pago || {}).total || {})._text
     : null;
- 
+
   let factura = estab && ptoEmi ? estab + "-" + ptoEmi + "-" : null;
 
   let facturaNumero = factura + secuencial;
+
+  let importeTotal = infoFactura
+    ? ((infoFactura || {}).importeTotal || {})._text || {}
+    : null;
 
   return {
     FECHA: `${parseDate}`,
@@ -109,10 +110,16 @@ function transformData(file) {
         ? empresaNombre.replace("&amp;", "&")
         : razonSocial
     }`,
-    SUBTOTAL: `${subTotal}`,
-    "12%": `${valor}`,
-    "0%": `${tarifa}`,
-    "TOTAL": `${total}`
+    SUBTOTAL: `${subTotal !== null && subTotal !== undefined ? subTotal : 0}`,
+    "12%": `${valor !== null && valor !== undefined ? valor : 0}`,
+    "0%": `${tarifa !== null && tarifa !== undefined ? tarifa : 0}`,
+    TOTAL: `${
+      total !== null && total !== undefined
+        ? total
+        : importeTotal !== null && importeTotal !== undefined
+        ? importeTotal
+        : 0
+    }`
   };
 }
 
