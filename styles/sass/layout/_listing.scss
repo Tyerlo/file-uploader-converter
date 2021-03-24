@@ -1,0 +1,17 @@
+.list {
+  ul {
+    // columns: 3;
+    display: flex;
+    flex-direction: column;
+    // flex-wrap: wrap;
+    list-style: none;
+    width: 30%;
+    margin: 0 auto;
+
+    li {
+      text-align: center;
+      background-color: $color-platinium;
+      padding: 1rem;
+    }
+  }
+}

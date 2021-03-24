@@ -1,16 +1,11 @@
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
-
 import Layout from "../components/Layout";
-import UploadFiles from "../components/UploadFiles";
+import "../../styles/sass/main.scss";
 
 const Home = () => {
-  return (
-    <Layout>
-      <UploadFiles />
-    </Layout>
-  );
+  return <Layout />;
 };
 
 export default Home;

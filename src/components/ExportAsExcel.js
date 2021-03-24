@@ -152,14 +152,14 @@ const ExportAsExcel = ({
             data={data.map((file) => {
               return transformData(file);
             })}
-            className="btn btn-primary"
+            className="btn--dark"
           >
-            Save as
+            Guardar
           </CSVLink>
         ) : (
-          <Button color="primary" disabled>
-            Save as
-          </Button>
+          <button className="btn--dark" disabled>
+            Guardar
+          </button>
         )}
       </Form>
     </div>

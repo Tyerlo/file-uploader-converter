@@ -1,11 +1,4 @@
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-  Input
-} from "reactstrap";
+import { Modal, ModalBody, ModalFooter, ModalHeader, Input } from "reactstrap";
 import React, { useState } from "react";
 import ExportAsExcel from "./ExportAsExcel";
 import { Formik } from "formik";
@@ -31,14 +24,22 @@ const SaveFileName = ({ data, setFilesUpload, setFileContent }) => {
       e.preventDefault();
     }
   };
+  const clearForm = () => {
+    setFilesUpload([]);
+    setFileContent([]);
+  };
+
   return (
-    <div className="d-flex justify-content-center align-items-center">
+    <div className="d-flex justify-content-center align-items-center mt-4">
       <Formik validationSchema={validationSchema} initialValues={intialValues}>
         {(props) => (
           <Fragment>
-            <Button color="primary" onClick={toggle}>
+            <button className="btn--dark" onClick={clearForm}>
+              Reset
+            </button>
+            <button className="btn--dark" onClick={toggle}>
               Download
-            </Button>
+            </button>
             <Modal isOpen={modal} toggle={toggle}>
               <ModalHeader toggle={toggle}>Name the file</ModalHeader>
               <ModalBody>
@@ -73,9 +74,9 @@ const SaveFileName = ({ data, setFilesUpload, setFileContent }) => {
                   fileName={props.values.fileName}
                   modal={modal}
                 />
-                <Button color="secondary" onClick={toggle}>
+                <button className="btn--dark" onClick={toggle}>
                   Cancel
-                </Button>
+                </button>
               </ModalFooter>
             </Modal>
           </Fragment>

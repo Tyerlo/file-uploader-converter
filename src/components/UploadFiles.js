@@ -1,7 +1,8 @@
-import React, { Fragment, useCallback, useState } from "react";
-import "./UploadFiles.css";
+import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import SaveFileName from "./SaveFileName";
+import { Container, Row, Col } from "reactstrap";
+import { Fragment } from "react";
 
 const readFileContents = (file, setFileContent) => {
   const reader = new FileReader();
@@ -49,16 +50,11 @@ const UploadFiles = () => {
     maxFiles: 100,
     accept: "text/xml"
   });
-
-  const fileName =
-    files.length > 0 &&
-    files.map((file) => {
-      return <li key={file.name + "-key"}>{file.name}</li>;
-    });
+  const twoColumns = Math.floor(files.length / 2);
 
   return (
     <Fragment>
-      <section>
+      <section className="section-upload">
         <div {...getRootProps({ className: "dropzone" })}>
           <input {...getInputProps()} />
 
@@ -67,7 +63,6 @@ const UploadFiles = () => {
         </div>
         <em>(Only *.xml will be accepted)</em>
         <aside>
-          <h4>Files</h4>
           {fileRejections.length > 100 ? (
             <p className="text-danger">
               <i className="fas fa-times mr-1" />
@@ -75,17 +70,32 @@ const UploadFiles = () => {
               limit is only 100 files files to upload
             </p>
           ) : null}
-          <ul>{fileName ? fileName : null}</ul>
         </aside>
       </section>
+      <section>
+        <h4>List of files</h4>
+        <div className="list">
+          <ul>
+            {files.slice(0, twoColumns).map((file, index) => (
+              <li key={index}>{file.name}</li>
+            ))}
+          </ul>
 
-      {typeof fileContent !== "undefined" && fileContent.length > 0 ? (
-        <SaveFileName
-          data={fileContent}
-          setFilesUpload={setFilesUpload}
-          setFileContent={setFileContent}
-        />
-      ) : null}
+          <ul>
+            {files.slice(twoColumns).map((file, index) => (
+              <li key={index}>{file.name}</li>
+            ))}
+          </ul>
+        </div>
+
+        {typeof fileContent !== "undefined" && fileContent.length > 0 ? (
+          <SaveFileName
+            data={fileContent}
+            setFilesUpload={setFilesUpload}
+            setFileContent={setFileContent}
+          />
+        ) : null}
+      </section>
     </Fragment>
   );
 };
