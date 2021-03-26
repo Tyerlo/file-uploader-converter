@@ -5,7 +5,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { Fragment } from "react";
 
-const SaveFileName = ({ data, setFilesUpload, setFileContent }) => {
+const SaveFileName = ({ data, files, removeAll }) => {
   const [modal, setModal] = useState(false);
 
   const [charLeft] = useState(25);
@@ -24,26 +24,34 @@ const SaveFileName = ({ data, setFilesUpload, setFileContent }) => {
       e.preventDefault();
     }
   };
-  const clearForm = () => {
-    setFilesUpload([]);
-    setFileContent([]);
-  };
 
   return (
     <div className="d-flex justify-content-center align-items-center mt-4">
       <Formik validationSchema={validationSchema} initialValues={intialValues}>
         {(props) => (
           <Fragment>
-            <button className="btn--dark" onClick={clearForm}>
-              Reset
-            </button>
-            <button className="btn--dark" onClick={toggle}>
-              Download
-            </button>
-            <Modal isOpen={modal} toggle={toggle}>
-              <ModalHeader toggle={toggle}>Name the file</ModalHeader>
-              <ModalBody>
+            {data.length > 0 && (
+              <button className="btn btn--dark" onClick={toggle}>
+                Download
+              </button>
+            )}
+
+            {files.length > 0 && (
+              <button className=" btn btn--dark" onClick={removeAll}>
+                Reset
+              </button>
+            )}
+            <Modal style={{ fontSize: "2rem" }} isOpen={modal} toggle={toggle}>
+              <ModalHeader toggle={toggle}>
+                <div className="heading-list">
+                  <header className="heading-list--list">
+                    Nombrar el archivo
+                  </header>
+                </div>
+              </ModalHeader>
+              <ModalBody style={{ fontSize: "2rem" }}>
                 <Input
+                  style={{ fontSize: "2rem" }}
                   type="text"
                   name="fileName"
                   minLength={1}
@@ -66,15 +74,14 @@ const SaveFileName = ({ data, setFilesUpload, setFileContent }) => {
               </ModalBody>
               <ModalFooter>
                 <ExportAsExcel
-                  setFileContent={setFileContent}
-                  setFilesUpload={setFilesUpload}
+                  removeAll={removeAll}
                   setModal={setModal}
                   data={data}
                   handleSubmit={props.handleSubmit}
                   fileName={props.values.fileName}
                   modal={modal}
                 />
-                <button className="btn--dark" onClick={toggle}>
+                <button className="btn btn--dark" onClick={toggle}>
                   Cancel
                 </button>
               </ModalFooter>

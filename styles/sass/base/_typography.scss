@@ -12,18 +12,33 @@ body {
   margin-bottom: 6rem;
 
   &--main {
-    font-size: 3rem;
+    display: block;
+    font-size: 6rem;
     font-weight: 400;
+    letter-spacing: 2.5rem;
     @include respond(phone) {
-      font-size: 1.5rem;
+      font-size: 2rem;
     }
   }
 
   &--sub {
     display: block;
-    font-size: 2rem;
+    font-size: 3rem;
     font-weight: 700;
     letter-spacing: 1.5rem;
+    @include respond(phone) {
+      letter-spacing: 0.5rem;
+      font-size: 2rem;
+    }
+  }
+}
+
+.heading-list {
+  color: $color-primary;
+  text-transform: uppercase;
+  margin-top: 2rem;
+  &--list {
+    font-size: 2rem;
     @include respond(phone) {
       letter-spacing: 0.5rem;
     }

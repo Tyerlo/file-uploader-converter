@@ -1,14 +1,11 @@
 .list {
   ul {
-    // columns: 3;
-    display: flex;
-    flex-direction: column;
-    // flex-wrap: wrap;
     list-style: none;
-    width: 30%;
-    margin: 0 auto;
-
+    width: 100%;
+    height: 100%;
+    column-count: 4;
     li {
+      font-size: 1.5rem;
       text-align: center;
       background-color: $color-platinium;
       padding: 1rem;
