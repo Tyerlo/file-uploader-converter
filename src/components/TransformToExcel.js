@@ -69,6 +69,22 @@ export function transformData(file) {
     ? ((infoFactura || {}).importeTotal || {})._text || {}
     : null;
 
+  const ivaValor = file
+    ? (
+        (
+          (
+            (
+              (
+                (((file.autorizacion || {}).comprobante || {}).factura || {})
+                  .detalles || {}
+              ).detalle || {}
+            ).impuestos || {}
+          ).impuesto || {}
+        ).valor || {}
+      )._text
+    : null;
+
+  //TODO fix so it can print out value for both filter and single value
   return {
     FECHA: `${parseDate}`,
     MES: `${parseMonth}`,
@@ -80,7 +96,13 @@ export function transformData(file) {
         : razonSocial
     }`,
     SUBTOTAL: `${subTotal !== null && subTotal !== undefined ? subTotal : 0}`,
-    "12%": `${valor !== null && valor !== undefined ? valor : 0}`,
+    "12%": `${
+      valor !== null && valor !== undefined
+        ? valor
+        : ivaValor !== null && ivaValor !== undefined
+        ? ivaValor
+        : 0
+    }`,
     "0%": `${tarifa !== null && tarifa !== undefined ? tarifa : 0}`,
     TOTAL: `${
       total !== null && total !== undefined
