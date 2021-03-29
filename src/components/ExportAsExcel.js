@@ -2,7 +2,7 @@ import React from "react";
 import dateFormat from "dateformat";
 import { CSVLink } from "react-csv";
 import { Form } from "reactstrap";
-import { transformData } from "./TransformToExcel";
+import { transformData } from "./transformData";
 
 dateFormat.i18n = {
   monthNames: [
@@ -52,7 +52,7 @@ const ExportAsExcel = ({
             onClick={() => {
               return clearForm();
             }}
-            filename={fileName}
+            filename={`${fileName}.csv`}
             type="submit"
             enclosingCharacter={`"`}
             separator={";"}
