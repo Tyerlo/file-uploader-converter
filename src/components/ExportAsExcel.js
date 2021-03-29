@@ -2,7 +2,7 @@ import React from "react";
 import dateFormat from "dateformat";
 import { CSVLink } from "react-csv";
 import { Form } from "reactstrap";
-import { transformData } from "./transformData";
+import { transformData } from "./TransformToExcel";
 
 dateFormat.i18n = {
   monthNames: [
