@@ -29,7 +29,6 @@
   &--dark {
     background-color: $color-dark-green;
     color: $color-white;
-    margin-left: 2rem;
 
     &::after {
       background-color: $color-white;
@@ -41,11 +40,15 @@
   }
 
   &--light {
-    background-color: $color-green;
+    background-color: $color-primary-light;
     color: $color-white;
 
     &::after {
       background-color: $color-white;
     }
+  }
+
+  &--user-info {
+    padding: 2.5rem;
   }
 }
