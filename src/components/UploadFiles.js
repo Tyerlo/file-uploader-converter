@@ -2,18 +2,21 @@ import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import SaveFileName from "./SaveFileName";
 import { Fragment } from "react";
-import { readAllFiles } from "./ReadFiles";
+import { readAllFiles } from "../util/ReadFiles";
 
 const UploadFiles = () => {
   const [fileContent, setFileContent] = useState([]);
   const [files, setFilesUpload] = useState([]);
 
-  const onDrop = useCallback(async (acceptedFiles) => {
-    const allFiles = [...files, ...acceptedFiles];
-    setFilesUpload(allFiles);
+  const onDrop = useCallback(
+    async (acceptedFiles) => {
+      const allFiles = [...files, ...acceptedFiles];
+      setFilesUpload(allFiles);
 
-    return readAllFiles(allFiles, setFileContent);
-  }, []);
+      return readAllFiles(allFiles, setFileContent);
+    },
+    [files]
+  );
 
   const { fileRejections, getRootProps, getInputProps } = useDropzone({
     onDrop,

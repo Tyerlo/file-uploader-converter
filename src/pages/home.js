@@ -2,11 +2,13 @@ import React, { useEffect, useState, Fragment } from "react";
 import Footer from "../components/Footer";
 import netlifyIdentity from "netlify-identity-widget";
 import UploadFiles from "../components/UploadFiles";
-
+import jwt_decode from "jwt-decode";
 const Home = () => {
   const [user, setUser] = useState();
   useEffect(() => {
-    netlifyIdentity.init({});
+    netlifyIdentity.init({
+      locale: "es"
+    });
     setUser(user);
   }, [user]);
 
@@ -16,12 +18,18 @@ const Home = () => {
   });
 
   netlifyIdentity.on("logout", () => setUser());
-  // console.log(user);
-
-  // netlifyIdentity.refresh().then((jwt) => console.log(jwt));
-  //  {
-  //    user.user_metadata.full_name;
-  //  }
+  const loadSubscriptionContent = () => {
+    ["premium"].forEach((type) => {
+      fetch("/.netlify/functions/get-protected-content", {
+        method: "POST",
+        body: JSON.stringify({ type })
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+        });
+    });
+  };
   return (
     <div>
       <header className="header">
@@ -33,7 +41,7 @@ const Home = () => {
             <span className="heading-primary--sub">Empezar ahora</span>
           </h1>
         </div>
-
+        {/* 
         <div className="btn--user-info">
           {user ? null : (
             <button
@@ -63,10 +71,13 @@ const Home = () => {
               </h1>
             </Fragment>
           )}
-        </div>
+        </div> */}
       </header>
       <main>
-        <div className="header__drop-zone">{user && <UploadFiles />}</div>
+        {/* <div className="header__drop-zone">{user && <UploadFiles />}</div> */}
+        <div className="header__drop-zone">
+          <UploadFiles />
+        </div>
       </main>
 
       <Footer />
