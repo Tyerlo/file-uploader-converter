@@ -4,32 +4,45 @@ import netlifyIdentity from "netlify-identity-widget";
 import UploadFiles from "../components/UploadFiles";
 import jwt_decode from "jwt-decode";
 const Home = () => {
-  const [user, setUser] = useState();
-  useEffect(() => {
-    netlifyIdentity.init({
-      locale: "es"
-    });
-    setUser(user);
-  }, [user]);
+  // const [user, setUser] = useState();
+  // useEffect(() => {
+  //   netlifyIdentity.init({
+  //     locale: "es"
+  //   });
+  //   setUser(user);
+  // }, [user]);
 
-  netlifyIdentity.on("login", (user) => {
-    netlifyIdentity.close();
-    setUser(user);
-  });
+  // netlifyIdentity.on("login", (user) => {
+  //   netlifyIdentity.close();
+  //   loadSubscriptionContent(setUser(user));
+  // });
 
-  netlifyIdentity.on("logout", () => setUser());
-  const loadSubscriptionContent = () => {
-    ["premium"].forEach((type) => {
-      fetch("/.netlify/functions/get-protected-content", {
-        method: "POST",
-        body: JSON.stringify({ type })
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-        });
-    });
-  };
+  // netlifyIdentity.on("logout", () => loadSubscriptionContent(setUser));
+  // const loadSubscriptionContent = () => {
+  //   ["premium"].forEach((type) => {
+  //     fetch("/.netlify/functions/get-protected-content", {
+  //       method: "POST",
+  //       body: JSON.stringify({ type })
+  //     })
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         // const template = document.querySelector("#content");
+  //         // const container = document.querySelector(`.${type}`);
+  //         // // remove any existing content from the content containers
+  //         // const oldContent = document.querySelector(".content-display");
+  //         // if (oldContent) {
+  //         //   document.removeChild(oldContent);
+  //         // }
+  //         // const content = template.content.cloneNode(true);
+  //         // const img = content.querySelector("img");
+  //         // img.src = data.src;
+  //         // img.alt = data.alt;
+  //         // const caption = content.querySelector("figcaption");
+  //         // caption.innerText = data.message;
+  //         // container.appendChild(content);
+  //       });
+  //   });
+  // };
   return (
     <div>
       <header className="header">
@@ -75,6 +88,14 @@ const Home = () => {
       </header>
       <main>
         {/* <div className="header__drop-zone">{user && <UploadFiles />}</div> */}
+        {/* <template id="content">
+          <figure class="content-display">
+            <img />
+            <figcaption>
+              <a class="credit"></a>
+            </figcaption>
+          </figure>
+        </template> */}
         <div className="header__drop-zone">
           <UploadFiles />
         </div>
