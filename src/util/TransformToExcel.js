@@ -39,10 +39,6 @@ export function transformData(file) {
     ? ((infoTributaria || {}).razonSocial || {})._text || {}
     : null;
 
-  let subTotal = infoFactura
-    ? ((infoFactura || {}).totalSinImpuestos || {})._text || {}
-    : null;
-
   let total = infoFactura
     ? ((((infoFactura || {}).pagos || {}).pago || {}).total || {})._text
     : null;
@@ -55,12 +51,43 @@ export function transformData(file) {
     ? ((infoFactura || {}).importeTotal || {})._text || {}
     : null;
 
-  const iva = subTotal * 0.12;
+  let baseImponible = infoFactura
+    ? (
+        (((infoFactura || {}).totalConImpuestos || {}).totalImpuesto || {})
+          .baseImponible || {}
+      )._text || {}
+    : null;
 
-  const subTotalSinIva = Number(total) - Number(subTotal) - Number(iva);
+  let iva12 = infoFactura
+    ? (
+        (((infoFactura || {}).totalConImpuestos || {}).totalImpuesto || {})
+          .valor || {}
+      )._text || {}
+    : null;
+
+  let multipleSubtotal =
+    ((infoFactura || {}).totalConImpuestos || {}).totalImpuesto || {};
+
+  let ivaCon12 =
+    multipleSubtotal.length > 0
+      ? multipleSubtotal
+          .map((value) => value.valor._text)
+          .filter((value) => value > 0)
+      : iva12;
+
+  let filterBaseImponible =
+    multipleSubtotal.length > 0
+      ? multipleSubtotal
+          .map((value) => value)
+          .filter((list) => list.valor._text > 0)
+          .map((value) => value.baseImponible._text)
+      : baseImponible;
+
+  const subTotalSinIva =
+    Number(total) - Number(filterBaseImponible) - Number(ivaCon12);
 
   const subImporteTotalSinIva =
-    Number(importeTotal) - Number(subTotal) - Number(iva);
+    Number(importeTotal) - Number(filterBaseImponible) - Number(ivaCon12);
 
   return {
     FECHA: `${parseDate}`,
@@ -73,23 +100,25 @@ export function transformData(file) {
         : razonSocial
     }`,
     "SUBTOTAL CON IVA": `${
-      subTotal !== null && subTotal !== undefined ? subTotal : 0
+      multipleSubtotal !== null && multipleSubtotal !== undefined
+        ? Number(filterBaseImponible)
+        : 0
     }`,
     "IVA 12%": `${
-      Number(subTotal) === Number(total) ||
-      Number(subTotal) === Number(importeTotal)
+      Number(baseImponible) === Number(total) ||
+      Number(baseImponible) === Number(importeTotal)
         ? 0
-        : subTotal !== null && subTotal !== undefined
-        ? Number(iva).toFixed(2)
+        : baseImponible !== null && baseImponible !== undefined
+        ? Number(ivaCon12)
         : 0
     }`,
     "SUBTOTAL SIN IVA": `${
-      Number(subTotal) === Number(total) ||
-      Number(subTotal) === Number(importeTotal)
+      Number(baseImponible) === Number(total) ||
+      Number(baseImponible) === Number(importeTotal)
         ? total
         : importeTotal
-        ? subTotal !== null &&
-          subTotal !== undefined &&
+        ? baseImponible !== null &&
+          baseImponible !== undefined &&
           total !== null &&
           total !== undefined &&
           importeTotal !== null &&
