@@ -26,7 +26,7 @@ const SaveFileName = ({ data, files, removeAll }) => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center mt-4">
+    <div className="d-flex justify-content-center align-items-center mt-4 mb-4">
       <Formik validationSchema={validationSchema} initialValues={intialValues}>
         {(props) => (
           <Fragment>
