@@ -1,5 +1,6 @@
 .section-upload {
   @include center;
+  color: $color-text;
   font-size: 2rem;
   @include respond(phone) {
     font-size: 1.2rem;
@@ -10,5 +11,14 @@
   font-size: 2rem;
   @include respond(phone) {
     font-size: 1.2rem;
+  }
+}
+
+.icon {
+  font-size: 7rem;
+  color: $color-primary;
+
+  @include respond(phone) {
+    font-size: 3rem;
   }
 }

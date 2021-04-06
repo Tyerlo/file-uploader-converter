@@ -35,11 +35,14 @@ const UploadFiles = () => {
         <div {...getRootProps({ className: "dropzone" })}>
           <input {...getInputProps()} />
 
-          <p>Drag n' drop some files here, or click to select files</p>
-          <em>(100 files are the maximum number of files you can drop here)</em>
+          <p>
+            <span className="icon">
+              <i className="fas fa-file-upload"></i>
+            </span>
+          </p>
+          <em>Subir archivos *.xml</em>
         </div>
-        <em>(Only *.xml will be accepted)</em>
-        <aside></aside>
+        <em></em>
       </section>
       <section className="section-listing">
         {fileRejections.length > 100 ? (
@@ -47,8 +50,8 @@ const UploadFiles = () => {
             <h4 className="heading-list--list">
               <p className="text-danger">
                 <i className="fas fa-times mr-1" />
-                You have uploaded more than {fileRejections.length} files, the
-                limit is only 100 files files to upload
+                Subiste {fileRejections.length} archivos. maximo permitido 100
+                archivos
               </p>
             </h4>
           </div>
@@ -57,7 +60,7 @@ const UploadFiles = () => {
           <Fragment>
             <div className="heading-list">
               <h4 className="heading-list--list">
-                Subiste {files.length} filas
+                Subiste {files.length} archivo
               </h4>
             </div>
             <div className="list">

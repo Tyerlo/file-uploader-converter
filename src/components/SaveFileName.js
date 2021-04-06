@@ -13,7 +13,7 @@ const SaveFileName = ({ data, files, removeAll }) => {
   const toggle = () => setModal(!modal);
 
   const validationSchema = Yup.object({
-    fileName: Yup.string().required("Filename can't be empty")
+    fileName: Yup.string().required("Nombre archivo no puede estar vacio")
   });
   const intialValues = {
     fileName: ""
@@ -32,13 +32,13 @@ const SaveFileName = ({ data, files, removeAll }) => {
           <Fragment>
             {data.length > 0 && (
               <button className="btn btn--dark" onClick={toggle}>
-                Download
+                Descargar
               </button>
             )}
 
             {files.length > 0 && (
               <button className=" btn btn--dark" onClick={removeAll}>
-                Reset
+                Reiniciar
               </button>
             )}
             <Modal style={{ fontSize: "2rem" }} isOpen={modal} toggle={toggle}>
@@ -60,7 +60,7 @@ const SaveFileName = ({ data, files, removeAll }) => {
                   onKeyDown={handleKeyDown}
                   onBlur={props.handleBlur}
                   maxLength={25}
-                  placeholder="Name the file"
+                  placeholder=" Nombrar el archivo"
                 />
                 {props.errors.fileName && props.touched.fileName ? (
                   <div className="text-danger">
@@ -82,7 +82,7 @@ const SaveFileName = ({ data, files, removeAll }) => {
                   modal={modal}
                 />
                 <button className="btn btn--dark" onClick={toggle}>
-                  Cancel
+                  Cancelar
                 </button>
               </ModalFooter>
             </Modal>
