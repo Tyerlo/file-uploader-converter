@@ -100,7 +100,10 @@ export function transformData(file) {
         : razonSocial
     }`,
     "SUBTOTAL CON IVA": `${
-      multipleSubtotal !== null && multipleSubtotal !== undefined
+      Number(filterBaseImponible) === Number(total) ||
+      Number(filterBaseImponible) === Number(importeTotal)
+        ? 0
+        : multipleSubtotal !== null && multipleSubtotal !== undefined
         ? Number(filterBaseImponible)
         : 0
     }`,

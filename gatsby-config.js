@@ -3,13 +3,19 @@ module.exports = {
     title: "siteconverter"
   },
   plugins: [
-    "gatsby-plugin-netlify-cms",
     "gatsby-plugin-sass",
-    "gatsby-plugin-netlify-identity-widget",
     {
-      resolve: "gatsby-plugin-netlify-identity-widget",
+      resolve: "gatsby-plugin-firebase",
       options: {
-        enableIdentityWidget: false
+        credentials: {
+          apiKey: process.env.API_KEY,
+          authDomain: process.env.AUTH_DOMAIN,
+          databaseURL: process.env.DATABASE_URL,
+          projectId: process.env.PROJECT_ID,
+          storageBucket: process.env.STORAGE_BUCKET,
+          messagingSenderId: process.env.MESSAGING_SENDER_ID,
+          appId: process.env.APP_ID
+        }
       }
     }
   ]

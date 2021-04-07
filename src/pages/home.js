@@ -1,24 +1,9 @@
 import React, { useEffect, useState, Fragment } from "react";
 import Footer from "../components/Footer";
-import netlifyIdentity from "netlify-identity-widget";
+
 import UploadFiles from "../components/UploadFiles";
-import jwtdecode from "jwt-decode";
+
 const Home = () => {
-  const [user, setUser] = useState();
-  useEffect(() => {
-    netlifyIdentity.init({
-      locale: "es"
-    });
-    setUser(user);
-  }, [user]);
-
-  netlifyIdentity.on("login", (user) => {
-    netlifyIdentity.close();
-    setUser(user);
-  });
-
-  netlifyIdentity.on("logout", () => setUser);
-
   return (
     <div>
       <header className="header">
@@ -29,8 +14,8 @@ const Home = () => {
           </h1>
         </div>
 
-        <div className="btn--user-info">
-          {/* {user ? null : (
+        {/* <div className="btn--user-info">
+          {user ? null : (
             <button
               className="btn btn--dark"
               onClick={() => {
@@ -41,7 +26,7 @@ const Home = () => {
             </button>
           )} */}
 
-          {user && (
+        {/* {user && (
             <Fragment>
               <button
                 className="btn btn--dark"
@@ -57,11 +42,10 @@ const Home = () => {
                 </span>
               </h1>
             </Fragment>
-          )}
-        </div>
+          )} */}
+        {/* </div> */}
       </header>
       <main>
-        {/* <div className="header__drop-zone">{user && <UploadFiles />}</div> */}
         <div className="header__drop-zone">
           <UploadFiles />
         </div>
