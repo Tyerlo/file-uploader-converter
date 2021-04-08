@@ -12,7 +12,7 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_XML_CONVERTER_C74C5 }}'
-          projectId: xml-converter-c74c5
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_FILE_UPLOAD_CONVERTER }}'
+          projectId: file-upload-converter
         env:
           FIREBASE_CLI_PREVIEWS: hostingchannels

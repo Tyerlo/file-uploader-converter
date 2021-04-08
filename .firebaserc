@@ -1,5 +1,17 @@
 {
   "projects": {
-    "default": "xml-converter-c74c5"
+    "default": "file-upload-converter"
+  },
+  "targets": {
+    "file-upload-converter": {
+      "hosting": {
+        "test": [
+          "file-upload-converter"
+        ],
+        "production": [
+          "file-upload-converter-prod"
+        ]
+      }
+    }
   }
 }
