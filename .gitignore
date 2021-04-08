@@ -67,4 +67,5 @@ package-lock.json
 **/.firebase
 **/.firebaserc
 **/firebase-debug.log
-.env
+.env.production
+.env.test
