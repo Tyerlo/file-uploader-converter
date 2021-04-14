@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   Modal,
   ModalHeader,
@@ -27,10 +27,6 @@ const Register = () => {
 
   const [user, loading, error] = useAuthState(firebase);
 
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const passwordConfirmRef = useRef();
-
   const [modal, setModal] = useState(false);
 
   const toggle = () => setModal(!modal);
@@ -42,24 +38,19 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const roles = {};
-
-    if (passwordRef.current.value !== passwordConfirmRef.current.value) {
+    setData({ ...data, error: null });
+    if (data.passwordOne !== data.passwordTwo) {
       return setData({ ...data, error: "Passwords do not match" });
     }
 
     try {
       const result = await firebase
         .auth()
-        .createUserWithEmailAndPassword(
-          emailRef.current.value,
-          passwordRef.current.value
-        );
+        .createUserWithEmailAndPassword(data.email, data.passwordOne);
       setData(result);
     } catch (err) {
       setData({ ...data, error: err.message });
     }
-
-    // setLoading(false);
   };
 
   return (
@@ -79,14 +70,15 @@ const Register = () => {
             <CardBody>
               <Form onSubmit={handleSubmit}>
                 <FormGroup>
-                  <Label style={{ fontSize: "1.5rem" }} for="exampleEmail">
+                  <Label style={{ fontSize: "1.5rem" }} for="email">
                     Email
                   </Label>
                   <Input
                     onChange={handleChange}
                     style={{ fontSize: "1.5rem" }}
                     type="email"
-                    ref={emailRef}
+                    value={data.email}
+                    name="email"
                   />
                 </FormGroup>
                 <FormGroup>
@@ -97,7 +89,8 @@ const Register = () => {
                     onChange={handleChange}
                     style={{ fontSize: "1.5rem" }}
                     type="password"
-                    ref={passwordRef}
+                    value={data.passwordOne}
+                    name="passwordOne"
                   />
                 </FormGroup>
                 <FormGroup>
@@ -108,7 +101,8 @@ const Register = () => {
                     onChange={handleChange}
                     style={{ fontSize: "1.5rem" }}
                     type="password"
-                    ref={passwordConfirmRef}
+                    value={data.passwordTwo}
+                    name="passwordTwo"
                   />
                 </FormGroup>
               </Form>
@@ -121,8 +115,7 @@ const Register = () => {
             {data.error}
           </Alert>
         ) : null}
-        {loading && <p>LOADING...</p>}
-        {user && user.displayName(<p>Hi {user.displayName}</p>)}
+
         <ModalFooter>
           <button className="btn btn--dark" onClick={handleSubmit}>
             Crear

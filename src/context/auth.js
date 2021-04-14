@@ -18,6 +18,9 @@ export default function useAuthState(firebase) {
             error: action.error,
             loading: false
           };
+
+        default:
+          return null;
       }
     },
     {
