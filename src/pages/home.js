@@ -1,8 +1,8 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React from "react";
 import Footer from "../components/Footer";
 
 import UploadFiles from "../components/UploadFiles";
-
+import Register from "../pages/register";
 const Home = () => {
   return (
     <div>
@@ -13,37 +13,7 @@ const Home = () => {
             <span className="heading-primary--sub">Empezar ahora</span>
           </h1>
         </div>
-
-        {/* <div className="btn--user-info">
-          {user ? null : (
-            <button
-              className="btn btn--dark"
-              onClick={() => {
-                netlifyIdentity.open();
-              }}
-            >
-              Entrar
-            </button>
-          )} */}
-
-        {/* {user && (
-            <Fragment>
-              <button
-                className="btn btn--dark"
-                onClick={() => {
-                  netlifyIdentity.logout();
-                }}
-              >
-                logout
-              </button>
-              <h1 className="heading-primary">
-                <span className="heading-primary--welcome">
-                  Bienvenido {user.user_metadata.full_name}
-                </span>
-              </h1>
-            </Fragment>
-          )} */}
-        {/* </div> */}
+        <Register />
       </header>
       <main>
         <div className="header__drop-zone">

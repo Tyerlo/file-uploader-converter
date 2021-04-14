@@ -4,6 +4,7 @@
   "private": true,
   "description": "A site to convert xml to excel and download",
   "author": "Tyerlo",
+  "license": "MIT",
   "keywords": [
     "gatsby"
   ],
@@ -18,6 +19,7 @@
     "@fortawesome/fontawesome-free": "^5.15.2",
     "bootstrap": "^4.6.0",
     "dateformat": "^4.5.1",
+    "dotenv": "^8.2.0",
     "firebase": "^8.3.2",
     "formik": "^2.2.6",
     "gatsby": "^3.0.1",
@@ -32,6 +34,7 @@
     "reactstrap": "^8.9.0",
     "sass": "^1.32.8",
     "stream": "0.0.2",
+    "stripe": "^8.142.0",
     "xml-js": "^1.6.11",
     "yup": "^0.32.9"
   },
