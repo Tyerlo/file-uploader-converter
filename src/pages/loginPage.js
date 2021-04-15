@@ -1,6 +1,5 @@
 import React, { Fragment, useState } from "react";
 import {
-  Modal,
   ModalHeader,
   ModalBody,
   ModalFooter,
@@ -13,17 +12,13 @@ import {
   Alert
 } from "reactstrap";
 import firebase from "gatsby-plugin-firebase";
-
 import useAuthState from "../context/auth";
 import { navigate } from "gatsby";
-import * as ROUTES from "../constants/routes";
 
-const LoginPage = ({ toggle }) => {
+const LoginPage = ({ toggle, setModal }) => {
   const [data, setData] = useState({
-    username: "",
     email: "",
     passwordOne: "",
-    passwordTwo: "",
     isAdmin: false,
     error: null
   });
@@ -37,31 +32,25 @@ const LoginPage = ({ toggle }) => {
     e.preventDefault();
     const roles = {};
     setData({ ...data, error: null });
-    if (data.passwordOne !== data.passwordTwo) {
-      return setData({ ...data, error: "Passwords do not match" });
-    }
 
     await firebase
       .auth()
-      .createUserWithEmailAndPassword(data.email, data.passwordOne)
+      .signInWithEmailAndPassword(data.email, data.passwordOne)
       .then((authUser) => {
         setData(authUser);
-      })
-      .then(() => {
-        let user = firebase.auth().currentUser;
-        user.sendEmailVerification().then(() => {
-          navigate(ROUTES.SUCCESS_PAGE);
-        });
+        navigate("/");
+        setModal((closeModal) => !closeModal);
       })
       .catch((err) => {
         setData({ ...data, error: err.message });
       });
   };
+
   return (
     <Fragment>
       <ModalHeader toggle={toggle}>
         <div className="heading-list">
-          <header className="heading-list--list"> Iniciar session</header>
+          <header className="heading-list--list"> Iniciar sesion</header>
         </div>
       </ModalHeader>
       <ModalBody>
@@ -70,25 +59,25 @@ const LoginPage = ({ toggle }) => {
             <Form onSubmit={handleSubmit}>
               <FormGroup>
                 <Label style={{ fontSize: "1.5rem" }} for="email">
-                  Email
+                  Correo
                 </Label>
                 <Input
                   onChange={handleChange}
                   style={{ fontSize: "1.5rem" }}
                   type="email"
-                  value={data && data.email}
+                  value={data.email}
                   name="email"
                 />
               </FormGroup>
               <FormGroup>
                 <Label style={{ fontSize: "1.5rem" }} for="password">
-                  Password
+                  Contraseña
                 </Label>
                 <Input
                   onChange={handleChange}
                   style={{ fontSize: "1.5rem" }}
                   type="password"
-                  value={data && data.passwordOne}
+                  value={data.passwordOne}
                   name="passwordOne"
                 />
               </FormGroup>
@@ -96,10 +85,10 @@ const LoginPage = ({ toggle }) => {
           </CardBody>
         </Card>
       </ModalBody>
-      {data && data.error ? (
+      {data.error ? (
         <Alert style={{ fontSize: "1.5rem" }} color="danger">
           <i className="fas fa-times mr-1" />
-          {data && data.error}
+          {data.error}
         </Alert>
       ) : null}
       <ModalFooter>

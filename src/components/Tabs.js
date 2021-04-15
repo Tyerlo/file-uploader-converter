@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Nav, NavItem, NavLink } from "reactstrap";
 import classnames from "classnames";
 import PageModal from "./PageModal";
-const Tabs = ({ toggle }) => {
+const Tabs = ({ toggle, setModal }) => {
   const [activeTab, setActiveTab] = useState("1");
 
   const activeToggle = (tab) => {
@@ -35,7 +35,7 @@ const Tabs = ({ toggle }) => {
           </NavLink>
         </NavItem>
       </Nav>
-      <PageModal activeTab={activeTab} toggle={toggle} />
+      <PageModal activeTab={activeTab} toggle={toggle} setModal={setModal} />
     </div>
   );
 };

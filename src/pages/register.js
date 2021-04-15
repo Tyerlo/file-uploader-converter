@@ -14,9 +14,10 @@ import {
 import firebase from "gatsby-plugin-firebase";
 import useAuthState from "../context/auth";
 import { navigate } from "gatsby";
-import * as ROUTES from "../constants/routes";
 
-const Register = ({ modal, toggle }) => {
+import { toast } from "react-toastify";
+
+const Register = ({ toggle, setModal }) => {
   const [data, setData] = useState({
     username: "",
     email: "",
@@ -49,12 +50,22 @@ const Register = ({ modal, toggle }) => {
       .then(() => {
         let user = firebase.auth().currentUser;
         user.sendEmailVerification().then(() => {
-          navigate(ROUTES.SUCCESS_PAGE);
+          navigate("/");
+          setModal((closeModal) => !closeModal);
         });
       })
       .catch((err) => {
         setData({ ...data, error: err.message });
       });
+
+    //  toast.success("Success Notification !", {
+    //    position: toast.POSITION.TOP_CENTER,
+    //    autoClose: 5000,
+    //    hideProgressBar: false,
+    //    closeOnClick: true,
+    //    pauseOnHover: true,
+    //    draggable: true
+    //  });
   };
 
   return (
@@ -70,7 +81,7 @@ const Register = ({ modal, toggle }) => {
             <Form onSubmit={handleSubmit}>
               <FormGroup>
                 <Label style={{ fontSize: "1.5rem" }} for="email">
-                  Email
+                  Correo
                 </Label>
                 <Input
                   onChange={handleChange}
@@ -82,7 +93,7 @@ const Register = ({ modal, toggle }) => {
               </FormGroup>
               <FormGroup>
                 <Label style={{ fontSize: "1.5rem" }} for="password">
-                  Password
+                  Contraseña
                 </Label>
                 <Input
                   onChange={handleChange}
@@ -94,7 +105,7 @@ const Register = ({ modal, toggle }) => {
               </FormGroup>
               <FormGroup>
                 <Label style={{ fontSize: "1.5rem" }} for="password-confirm">
-                  Confirm Password
+                  Confirmar Contraseña
                 </Label>
                 <Input
                   onChange={handleChange}
@@ -128,26 +139,6 @@ const Register = ({ modal, toggle }) => {
       </ModalFooter>
     </Fragment>
   );
-
-  {
-    /* {user && (
-            <Fragment>
-              <button
-                className="btn btn--dark"
-                onClick={() => {
-                  netlifyIdentity.logout();
-                }}
-              >
-                logout
-              </button>
-              <h1 className="heading-primary">
-                <span className="heading-primary--welcome">
-                  Bienvenido {user.user_metadata.full_name}
-                </span>
-              </h1>
-            </Fragment>
-          )} </div>  */
-  }
 };
 
 export default Register;
