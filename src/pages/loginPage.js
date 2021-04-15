@@ -1,5 +1,6 @@
-import React, { useState, Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import {
+  Modal,
   ModalHeader,
   ModalBody,
   ModalFooter,
@@ -12,11 +13,12 @@ import {
   Alert
 } from "reactstrap";
 import firebase from "gatsby-plugin-firebase";
+
 import useAuthState from "../context/auth";
 import { navigate } from "gatsby";
 import * as ROUTES from "../constants/routes";
 
-const Register = ({ modal, toggle }) => {
+const LoginPage = ({ toggle }) => {
   const [data, setData] = useState({
     username: "",
     email: "",
@@ -25,7 +27,6 @@ const Register = ({ modal, toggle }) => {
     isAdmin: false,
     error: null
   });
-
   const [user, loading, error] = useAuthState(firebase);
 
   const handleChange = (e) => {
@@ -56,12 +57,11 @@ const Register = ({ modal, toggle }) => {
         setData({ ...data, error: err.message });
       });
   };
-
   return (
     <Fragment>
       <ModalHeader toggle={toggle}>
         <div className="heading-list">
-          <header className="heading-list--list">Crear una cuenta</header>
+          <header className="heading-list--list"> Iniciar session</header>
         </div>
       </ModalHeader>
       <ModalBody>
@@ -76,7 +76,7 @@ const Register = ({ modal, toggle }) => {
                   onChange={handleChange}
                   style={{ fontSize: "1.5rem" }}
                   type="email"
-                  value={data.email}
+                  value={data && data.email}
                   name="email"
                 />
               </FormGroup>
@@ -88,30 +88,18 @@ const Register = ({ modal, toggle }) => {
                   onChange={handleChange}
                   style={{ fontSize: "1.5rem" }}
                   type="password"
-                  value={data.passwordOne}
+                  value={data && data.passwordOne}
                   name="passwordOne"
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label style={{ fontSize: "1.5rem" }} for="password-confirm">
-                  Confirm Password
-                </Label>
-                <Input
-                  onChange={handleChange}
-                  style={{ fontSize: "1.5rem" }}
-                  type="password"
-                  value={data.passwordTwo}
-                  name="passwordTwo"
                 />
               </FormGroup>
             </Form>
           </CardBody>
         </Card>
       </ModalBody>
-      {data.error ? (
+      {data && data.error ? (
         <Alert style={{ fontSize: "1.5rem" }} color="danger">
           <i className="fas fa-times mr-1" />
-          {data.error}
+          {data && data.error}
         </Alert>
       ) : null}
       <ModalFooter>
@@ -120,7 +108,7 @@ const Register = ({ modal, toggle }) => {
           className="btn btn--dark"
           onClick={handleSubmit}
         >
-          Crear
+          Iniciar
         </button>
         <button className="btn btn--dark" onClick={toggle}>
           Cancelar
@@ -128,26 +116,5 @@ const Register = ({ modal, toggle }) => {
       </ModalFooter>
     </Fragment>
   );
-
-  {
-    /* {user && (
-            <Fragment>
-              <button
-                className="btn btn--dark"
-                onClick={() => {
-                  netlifyIdentity.logout();
-                }}
-              >
-                logout
-              </button>
-              <h1 className="heading-primary">
-                <span className="heading-primary--welcome">
-                  Bienvenido {user.user_metadata.full_name}
-                </span>
-              </h1>
-            </Fragment>
-          )} </div>  */
-  }
 };
-
-export default Register;
+export default LoginPage;
