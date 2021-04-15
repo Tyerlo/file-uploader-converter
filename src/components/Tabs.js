@@ -1,8 +1,19 @@
 import React, { useState } from "react";
-import { Nav, NavItem, NavLink } from "reactstrap";
+import {
+  Modal,
+  Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane,
+  Row,
+  Col
+} from "reactstrap";
 import classnames from "classnames";
-import PageModal from "./PageModal";
-const Tabs = ({ toggle, setModal }) => {
+import Register from "../pages/register";
+import LoginPage from "../pages/loginPage";
+
+const Tabs = ({ modal, toggle, setModal }) => {
   const [activeTab, setActiveTab] = useState("1");
 
   const activeToggle = (tab) => {
@@ -10,7 +21,7 @@ const Tabs = ({ toggle, setModal }) => {
   };
 
   return (
-    <div>
+    <Modal contentClassName="modalDialog" isOpen={modal} toggle={toggle}>
       <Nav tabs>
         <NavItem>
           <NavLink
@@ -35,8 +46,23 @@ const Tabs = ({ toggle, setModal }) => {
           </NavLink>
         </NavItem>
       </Nav>
-      <PageModal activeTab={activeTab} toggle={toggle} setModal={setModal} />
-    </div>
+      <TabContent activeTab={activeTab}>
+        <TabPane tabId="1">
+          <Row>
+            <Col sm="12">
+              <Register toggle={toggle} setModal={setModal} />
+            </Col>
+          </Row>
+        </TabPane>
+        <TabPane tabId="2">
+          <Row>
+            <Col sm="12">
+              <LoginPage toggle={toggle} setModal={setModal} />
+            </Col>
+          </Row>
+        </TabPane>
+      </TabContent>
+    </Modal>
   );
 };
 export default Tabs;

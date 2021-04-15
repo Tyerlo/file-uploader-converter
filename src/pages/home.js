@@ -3,7 +3,7 @@ import Footer from "../components/Footer";
 import UploadFiles from "../components/UploadFiles";
 import firebase from "gatsby-plugin-firebase";
 import useAuthState from "../context/auth";
-import StartPage from "./startPage";
+import Tabs from "../components/Tabs";
 const Home = () => {
   const [modal, setModal] = useState(false);
 
@@ -45,7 +45,7 @@ const Home = () => {
           </div>
         )}
 
-        <StartPage modal={modal} toggle={toggle} setModal={setModal} />
+        <Tabs modal={modal} toggle={toggle} setModal={setModal} />
       </header>
       <main>
         {user && user.emailVerified ? (
