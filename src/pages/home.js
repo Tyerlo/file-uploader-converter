@@ -1,17 +1,21 @@
-import React, { useState, Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import Footer from "../components/Footer";
 import UploadFiles from "../components/UploadFiles";
 import firebase from "gatsby-plugin-firebase";
 import useAuthState from "../context/auth";
-import Tabs from "../components/Tabs";
+import Register from "../pages/register";
+import LoginPage from "../pages/loginPage";
 const Home = () => {
   const [modal, setModal] = useState(false);
+  const [loginModal, setLoginModal] = useState(false);
 
   const [user, loading, error] = useAuthState(firebase);
   const handleLogout = async (e) => {
     await firebase.auth().signOut();
   };
   const toggle = () => setModal(!modal);
+
+  const loginToggle = () => setLoginModal(!loginModal);
 
   return (
     <div>
@@ -34,18 +38,17 @@ const Home = () => {
             </h1> */}
           </div>
         ) : (
-          <div className="btn--user-info">
-            <button
-              disabled={loading}
-              className="btn btn--dark"
-              onClick={toggle}
-            >
-              Iniciar
-            </button>
-          </div>
+          <Fragment>
+            <div className="btn--center-button">
+              <Register toggle={toggle} modal={modal} setModal={setModal} />
+              <LoginPage
+                loginToggle={loginToggle}
+                modal={loginModal}
+                setModal={setLoginModal}
+              />
+            </div>
+          </Fragment>
         )}
-
-        <Tabs modal={modal} toggle={toggle} setModal={setModal} />
       </header>
       <main>
         {user && user.emailVerified ? (

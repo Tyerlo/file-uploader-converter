@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from "react";
 import {
+  Modal,
   ModalHeader,
   ModalBody,
   ModalFooter,
@@ -15,7 +16,7 @@ import firebase from "gatsby-plugin-firebase";
 import useAuthState from "../context/auth";
 import { navigate } from "gatsby";
 
-const LoginPage = ({ toggle, setModal }) => {
+const LoginPage = ({ loginToggle, modal, setModal }) => {
   const [data, setData] = useState({
     email: "",
     passwordOne: "",
@@ -48,61 +49,70 @@ const LoginPage = ({ toggle, setModal }) => {
 
   return (
     <Fragment>
-      <ModalHeader toggle={toggle}>
-        <div className="heading-list">
-          <header className="heading-list--list"> Iniciar sesion</header>
-        </div>
-      </ModalHeader>
-      <ModalBody>
-        <Card>
-          <CardBody>
-            <Form onSubmit={handleSubmit}>
-              <FormGroup>
-                <Label style={{ fontSize: "1.5rem" }} for="email">
-                  Correo
-                </Label>
-                <Input
-                  onChange={handleChange}
-                  style={{ fontSize: "1.5rem" }}
-                  type="email"
-                  value={data.email}
-                  name="email"
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label style={{ fontSize: "1.5rem" }} for="password">
-                  Contraseña
-                </Label>
-                <Input
-                  onChange={handleChange}
-                  style={{ fontSize: "1.5rem" }}
-                  type="password"
-                  value={data.passwordOne}
-                  name="passwordOne"
-                />
-              </FormGroup>
-            </Form>
-          </CardBody>
-        </Card>
-      </ModalBody>
-      {data.error ? (
-        <Alert style={{ fontSize: "1.5rem" }} color="danger">
-          <i className="fas fa-times mr-1" />
-          {data.error}
-        </Alert>
-      ) : null}
-      <ModalFooter>
-        <button
-          disabled={loading}
-          className="btn btn--dark"
-          onClick={handleSubmit}
-        >
-          Iniciar
-        </button>
-        <button className="btn btn--dark" onClick={toggle}>
-          Cancelar
-        </button>
-      </ModalFooter>
+      <button
+        disabled={loading}
+        className="btn btn--dark "
+        onClick={loginToggle}
+      >
+        Iniciar
+      </button>
+      <Modal contentClassName="modalDialog" isOpen={modal} toggle={loginToggle}>
+        <ModalHeader toggle={loginToggle}>
+          <div className="heading-list">
+            <header className="heading-list--list"> Iniciar sesion</header>
+          </div>
+        </ModalHeader>
+        <ModalBody>
+          <Card>
+            <CardBody>
+              <Form onSubmit={handleSubmit}>
+                <FormGroup>
+                  <Label style={{ fontSize: "1.5rem" }} for="email">
+                    Correo
+                  </Label>
+                  <Input
+                    onChange={handleChange}
+                    style={{ fontSize: "1.5rem" }}
+                    type="email"
+                    value={data.email}
+                    name="email"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label style={{ fontSize: "1.5rem" }} for="password">
+                    Contraseña
+                  </Label>
+                  <Input
+                    onChange={handleChange}
+                    style={{ fontSize: "1.5rem" }}
+                    type="password"
+                    value={data.passwordOne}
+                    name="passwordOne"
+                  />
+                </FormGroup>
+              </Form>
+            </CardBody>
+          </Card>
+        </ModalBody>
+        {data.error ? (
+          <Alert style={{ fontSize: "1.5rem" }} color="danger">
+            <i className="fas fa-times mr-1" />
+            {data.error}
+          </Alert>
+        ) : null}
+        <ModalFooter>
+          <button
+            disabled={loading}
+            className="btn btn--dark"
+            onClick={handleSubmit}
+          >
+            Iniciar
+          </button>
+          <button className="btn btn--dark" onClick={loginToggle}>
+            Cancelar
+          </button>
+        </ModalFooter>
+      </Modal>
     </Fragment>
   );
 };
