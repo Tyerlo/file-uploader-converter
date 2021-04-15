@@ -46,7 +46,7 @@ const Tabs = ({ modal, toggle, setModal }) => {
           </NavLink>
         </NavItem>
       </Nav>
-      <TabContent activeTab={activeTab}>
+      <TabContent className="activeTab" activeTab={activeTab}>
         <TabPane tabId="1">
           <Row>
             <Col sm="12">
