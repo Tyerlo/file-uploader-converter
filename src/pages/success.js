@@ -15,9 +15,7 @@ const success = () => {
           </h1>
         </div>
         <div className="btn--center-button">
-          <Link to="/">
-            <LoginPage />
-          </Link>
+          <Link to="/">Iniciar</Link>
         </div>
       </header>
       <main></main>

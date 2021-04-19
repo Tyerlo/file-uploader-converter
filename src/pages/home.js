@@ -39,7 +39,7 @@ const Home = () => {
           </div>
         ) : (
           <Fragment>
-            <div className="btn--center-button">
+            <div className="d-flex d-block align-items-center justify-content-center min-vh-100">
               <Register toggle={toggle} modal={modal} setModal={setModal} />
               <LoginPage
                 loginToggle={loginToggle}
