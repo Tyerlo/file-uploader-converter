@@ -14,8 +14,10 @@ const success = () => {
             </span>
           </h1>
         </div>
-        <div className="btn--center-button">
-          <Link to="/">Iniciar</Link>
+        <div className="d-flex d-block align-items-center justify-content-center min-vh-100">
+          <Link className="btn btn--dark" to="/">
+            Iniciar
+          </Link>
         </div>
       </header>
       <main></main>
