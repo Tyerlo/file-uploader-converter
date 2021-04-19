@@ -2,15 +2,17 @@ import React from "react";
 import { Alert } from "reactstrap";
 import { Link } from "gatsby";
 import Footer from "../components/Footer";
-
-const success = () => {
+const verificationPage = () => {
   return (
     <div>
       <header className="header">
         <div className="header__text-box">
           <h1 className="heading-primary">
             <span className="heading-primary--sub">
-              <Alert>Verificar link en el correo electrónico</Alert>
+              <Alert>
+                Se ha verificado tu correo electrónico. Ya puedes iniciar sesión
+                con la cuenta nueva.
+              </Alert>
             </span>
           </h1>
         </div>
@@ -26,4 +28,4 @@ const success = () => {
     </div>
   );
 };
-export default success;
+export default verificationPage;
