@@ -36,6 +36,10 @@ const Register = ({ toggle, modal, setModal }) => {
     e.preventDefault();
     const roles = {};
     setData({ ...data, error: null });
+
+    if (data.isAdmin) {
+      roles["SUBSCRIBER"] = "SUBSCRIBER";
+    }
     if (data.passwordOne !== data.passwordTwo) {
       return setData({ ...data, error: "Passwords do not match" });
     }
