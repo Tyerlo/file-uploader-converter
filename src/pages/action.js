@@ -1,5 +1,6 @@
 import React from "react";
 import VerifyEmail from "./verifyEmail";
+import ResetPassword from "./resetPassword";
 import queryString from "query-string";
 import Footer from "../components/Footer";
 import { Link } from "gatsby";
@@ -13,6 +14,9 @@ const Action = (props) => {
   switch (mode) {
     case "verifyEmail":
       return <VerifyEmail actionCode={actionCode} />;
+
+    case "resetPassword":
+      return <ResetPassword actionCode={actionCode} />;
 
     default:
       return (

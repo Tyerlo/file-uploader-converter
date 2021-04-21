@@ -16,6 +16,8 @@ import firebase from "gatsby-plugin-firebase";
 import useAuthState from "../context/auth";
 import { navigate } from "gatsby";
 
+import ForgotPassWord from "./forgotPassWord";
+
 const LoginPage = ({ loginToggle, modal, setModal }) => {
   const [data, setData] = useState({
     email: "",
@@ -24,6 +26,9 @@ const LoginPage = ({ loginToggle, modal, setModal }) => {
     error: null
   });
   const [user, loading, error] = useAuthState(firebase);
+
+  const [passModal, setPassModal] = useState(false);
+  const passToggle = () => setPassModal(!passModal);
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -100,6 +105,22 @@ const LoginPage = ({ loginToggle, modal, setModal }) => {
             {data.error}
           </Alert>
         ) : null}
+        <div className="d-flex d-block align-items-center justify-content-center">
+          <a
+            href="/#"
+            onClick={passToggle}
+            className="mb-3"
+            style={{ fontSize: "1.5rem" }}
+          >
+            Olivdaste la contraseña?
+          </a>
+          <ForgotPassWord
+            loading={loading}
+            passToggle={passToggle}
+            passModal={passModal}
+          />
+        </div>
+
         <ModalFooter>
           <button
             disabled={loading}

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert } from "reactstrap";
 import { navigate } from "gatsby";
 import Footer from "../components/Footer";
@@ -21,13 +21,12 @@ const VerificationPage = ({ actionCode }) => {
       .catch((err) => {
         setData({ error: err.message, validCode: false, verifiedCode: true });
       });
-  }, []);
+  }, [actionCode]);
 
   const refreshPage = () => {
     navigate("/");
   };
-  console.log("verified code", data.verifiedCode);
-  console.log("valid code", data.validCode);
+
   return (
     <div>
       <header className="header">

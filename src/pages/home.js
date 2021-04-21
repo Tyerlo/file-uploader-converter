@@ -10,6 +10,7 @@ const Home = () => {
   const [loginModal, setLoginModal] = useState(false);
 
   const [user, loading, error] = useAuthState(firebase);
+
   const handleLogout = async (e) => {
     await firebase.auth().signOut();
   };
