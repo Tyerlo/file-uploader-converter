@@ -5,8 +5,7 @@ import queryString from "query-string";
 import Footer from "../components/Footer";
 import { Link } from "gatsby";
 import "../../styles/sass/main.scss";
-// import "@fortawesome/fontawesome-free/css/all.min.css";
-// import "bootstrap/dist/css/bootstrap.min.css";
+
 const Action = (props) => {
   const parsed = queryString.parse(props.location.search);
 

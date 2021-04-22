@@ -10,11 +10,11 @@ import {
   Input,
   Card,
   CardBody,
-  Alert
+  Alert,
+  Spinner
 } from "reactstrap";
 import firebase from "gatsby-plugin-firebase";
 import useAuthState from "../context/auth";
-import { navigate } from "gatsby";
 
 const Register = ({ toggle, modal, setModal }) => {
   const [data, setData] = useState({
@@ -23,7 +23,9 @@ const Register = ({ toggle, modal, setModal }) => {
     passwordOne: "",
     passwordTwo: "",
     isAdmin: false,
-    error: null
+    error: null,
+    formSent: false,
+    working: false
   });
 
   const [user, loading, error] = useAuthState(firebase);
@@ -53,12 +55,11 @@ const Register = ({ toggle, modal, setModal }) => {
       .then(() => {
         let user = firebase.auth().currentUser;
         user.sendEmailVerification().then(() => {
-          navigate("/success/");
-          setModal((closeModal) => !closeModal);
+          setData({ ...data, formSent: true, working: false });
         });
       })
       .catch((err) => {
-        setData({ ...data, error: err.message });
+        setData({ ...data, error: err.message, working: false });
       });
   };
 
@@ -74,70 +75,90 @@ const Register = ({ toggle, modal, setModal }) => {
       <Modal contentClassName="modalDialog" isOpen={modal} toggle={toggle}>
         <ModalHeader toggle={toggle}>
           <div className="heading-list">
-            <header className="heading-list--list">Crear una cuenta</header>
+            {data.formSent ? null : (
+              <header className="heading-list--list">Crear una cuenta</header>
+            )}
           </div>
         </ModalHeader>
         <ModalBody>
-          <Card>
-            <CardBody>
-              <Form onSubmit={handleSubmit}>
-                <FormGroup>
-                  <Label style={{ fontSize: "1.5rem" }} for="email">
-                    Correo
-                  </Label>
-                  <Input
-                    onChange={handleChange}
-                    style={{ fontSize: "1.5rem" }}
-                    type="email"
-                    value={data.email}
-                    name="email"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label style={{ fontSize: "1.5rem" }} for="password">
-                    Contraseña
-                  </Label>
-                  <Input
-                    onChange={handleChange}
-                    style={{ fontSize: "1.5rem" }}
-                    type="password"
-                    value={data.passwordOne}
-                    name="passwordOne"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label style={{ fontSize: "1.5rem" }} for="password-confirm">
-                    Confirmar Contraseña
-                  </Label>
-                  <Input
-                    onChange={handleChange}
-                    style={{ fontSize: "1.5rem" }}
-                    type="password"
-                    value={data.passwordTwo}
-                    name="passwordTwo"
-                  />
-                </FormGroup>
-              </Form>
-            </CardBody>
-          </Card>
+          {data.working ? (
+            <button className="btn btn--dark">
+              <Spinner size="md" role="status"></Spinner>
+              Cargando...
+            </button>
+          ) : data.formSent ? (
+            <Alert style={{ fontSize: "1.5rem" }}>
+              Verificar link en el correo electrónico
+            </Alert>
+          ) : (
+            <Card>
+              <CardBody>
+                <Form onSubmit={handleSubmit}>
+                  <FormGroup>
+                    <Label style={{ fontSize: "1.5rem" }} for="email">
+                      Correo
+                    </Label>
+                    <Input
+                      onChange={handleChange}
+                      style={{ fontSize: "1.5rem" }}
+                      type="email"
+                      value={data.email}
+                      name="email"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label style={{ fontSize: "1.5rem" }} for="password">
+                      Contraseña
+                    </Label>
+                    <Input
+                      onChange={handleChange}
+                      style={{ fontSize: "1.5rem" }}
+                      type="password"
+                      value={data.passwordOne}
+                      name="passwordOne"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label
+                      style={{ fontSize: "1.5rem" }}
+                      for="password-confirm"
+                    >
+                      Confirmar Contraseña
+                    </Label>
+                    <Input
+                      onChange={handleChange}
+                      style={{ fontSize: "1.5rem" }}
+                      type="password"
+                      value={data.passwordTwo}
+                      name="passwordTwo"
+                    />
+                  </FormGroup>
+                </Form>
+              </CardBody>
+            </Card>
+          )}
         </ModalBody>
         {data.error ? (
           <Alert style={{ fontSize: "1.5rem" }} color="danger">
-            <i className="fas fa-times mr-1" />
             {data.error}
           </Alert>
         ) : null}
         <ModalFooter>
-          <button
-            disabled={loading}
-            className="btn btn--dark"
-            onClick={handleSubmit}
-          >
-            Crear
-          </button>
-          <button className="btn btn--dark" onClick={toggle}>
-            Cancelar
-          </button>
+          {data.formSent ? null : (
+            <Fragment>
+              {" "}
+              <button
+                disabled={loading}
+                className="btn btn--dark"
+                onClick={handleSubmit}
+              >
+                Crear
+              </button>
+              <button className="btn btn--dark" onClick={toggle}>
+                Cancelar
+              </button>
+            </Fragment>
+          )}
         </ModalFooter>
       </Modal>
     </Fragment>

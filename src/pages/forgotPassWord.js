@@ -10,7 +10,8 @@ import {
   Input,
   Card,
   CardBody,
-  Alert
+  Alert,
+  Spinner
 } from "reactstrap";
 
 import firebase from "gatsby-plugin-firebase";
@@ -58,7 +59,10 @@ const ForgotPassWord = ({ passModal, passToggle, loading }) => {
         </ModalHeader>
         <ModalBody>
           {data.working ? (
-            <Alert style={{ fontSize: "1.5rem" }}>Loading...</Alert>
+            <button className="btn btn--dark">
+              <Spinner size="md" role="status"></Spinner>
+              Cargando...
+            </button>
           ) : data.formSent ? (
             <Alert style={{ fontSize: "1.5rem" }}>
               Una correo has enviado para cambiar su contraseña
