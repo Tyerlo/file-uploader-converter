@@ -72,10 +72,9 @@ const Register = ({ toggle, modal }) => {
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})/,
         "Debe contener 6 caracteres, una mayúscula, una minúscula, un número y un carácter en mayúsculas y minúsculas"
       ),
-    passwordTwo: Yup.string().oneOf(
-      [Yup.ref("passwordOne"), null],
-      "Las contraseñas no coinciden"
-    )
+    passwordTwo: Yup.string()
+      .required("Por favor, confirmar su contraseña")
+      .oneOf([Yup.ref("passwordOne"), null], "Las contraseñas no coinciden")
   });
 
   const initialValues = {
