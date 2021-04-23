@@ -13,8 +13,8 @@ import {
   Alert,
   Spinner
 } from "reactstrap";
-
 import firebase from "gatsby-plugin-firebase";
+import { firebaseErrors } from "../context/firebaseErrors";
 const ForgotPassWord = ({ passModal, passToggle, loading }) => {
   const [data, setData] = useState({
     email: "",
@@ -35,7 +35,11 @@ const ForgotPassWord = ({ passModal, passToggle, loading }) => {
           setData({ ...data, formSent: true, working: false });
         })
         .catch((err) => {
-          setData({ ...data, error: err.message, working: false });
+          setData({
+            ...data,
+            error: firebaseErrors[err.code] || err.message,
+            working: false
+          });
         });
     }
   };
@@ -92,7 +96,6 @@ const ForgotPassWord = ({ passModal, passToggle, loading }) => {
 
         {data.error ? (
           <Alert style={{ fontSize: "1.5rem" }} color="danger">
-            <i className="fas fa-times mr-1" />
             {data.error}
           </Alert>
         ) : null}

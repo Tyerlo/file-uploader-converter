@@ -1,4 +1,11 @@
-import { Modal, ModalBody, ModalFooter, ModalHeader, Input } from "reactstrap";
+import {
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Input,
+  Alert
+} from "reactstrap";
 import React, { useState } from "react";
 import ExportAsExcel from "./ExportAsExcel";
 import { Formik } from "formik";
@@ -63,10 +70,9 @@ const SaveFileName = ({ data, files, removeAll }) => {
                   placeholder=" Nombrar el archivo"
                 />
                 {props.errors.fileName && props.touched.fileName ? (
-                  <div className="text-danger">
-                    <i className="fas fa-times mr-1" />
+                  <Alert color="danger" style={{ fontSize: "1.5rem" }}>
                     {props.errors.fileName}
-                  </div>
+                  </Alert>
                 ) : null}
                 <p className="float-right">
                   {props.values.fileName.length}/{charLeft}

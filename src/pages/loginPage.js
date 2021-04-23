@@ -15,7 +15,7 @@ import {
 import firebase from "gatsby-plugin-firebase";
 import useAuthState from "../context/auth";
 import { navigate } from "gatsby";
-
+import { firebaseErrors } from "../context/firebaseErrors";
 import ForgotPassWord from "./forgotPassWord";
 
 const LoginPage = ({ loginToggle, modal, setModal }) => {
@@ -48,7 +48,7 @@ const LoginPage = ({ loginToggle, modal, setModal }) => {
         setModal((closeModal) => !closeModal);
       })
       .catch((err) => {
-        setData({ ...data, error: err.message });
+        setData({ ...data, error: firebaseErrors[err.code] || err.message });
       });
   };
 
@@ -101,7 +101,6 @@ const LoginPage = ({ loginToggle, modal, setModal }) => {
         </ModalBody>
         {data.error ? (
           <Alert style={{ fontSize: "1.5rem" }} color="danger">
-            <i className="fas fa-times mr-1" />
             {data.error}
           </Alert>
         ) : null}
