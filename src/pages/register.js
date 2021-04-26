@@ -42,7 +42,9 @@ const Register = ({ toggle, modal }) => {
         user.sendEmailVerification().then(() => {
           setData({ ...data, formSent: true, working: false });
         });
-
+        user.updateProfile({
+          displayName: values.ruc
+        });
         firebase.firestore().collection("users").add({
           uid: user.uid,
           email: user.email,
