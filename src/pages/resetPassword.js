@@ -15,16 +15,34 @@ import {
   Alert
 } from "reactstrap";
 import { Link } from "gatsby";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { firebaseErrors } from "../context/firebaseErrors";
 const ResetPassword = ({ actionCode }) => {
   const [data, setData] = useState({
     email: "",
     error: "",
-    passwordOne: "",
-    passwordTwo: "",
     success: false,
     validCode: null,
     verifiedCode: false
   });
+
+  const validateSchema = Yup.object({
+    passwordOne: Yup.string()
+      .required("Por favor, introduzca su contraseña")
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})/,
+        "Debe contener 6 caracteres, una mayúscula, una minúscula, un número y un carácter en mayúsculas y minúsculas"
+      ),
+    passwordTwo: Yup.string()
+      .required("Por favor, confirmar su contraseña")
+      .oneOf([Yup.ref("passwordOne"), null], "Las contraseñas no coinciden")
+  });
+
+  const initialValues = {
+    passwordOne: "",
+    passwordTwo: ""
+  };
 
   const [modal, setModal] = useState(false);
 
@@ -38,29 +56,24 @@ const ResetPassword = ({ actionCode }) => {
         setData({ email, validCode: true, verifiedCode: true });
       })
       .catch((err) => {
-        setData({ error: err.message, validCode: false, verifiedCode: true });
+        setData({
+          error: firebaseErrors[err.code] || err.message,
+          validCode: false,
+          verifiedCode: true
+        });
       });
   }, [actionCode]);
 
-  const handleResetPassword = async (event) => {
-    event.preventDefault();
-    if (data.passwordOne !== data.passwordTwo) {
-      return setData({ ...data, error: "Passwords do not match" });
-    }
-
+  const handleResetPassword = async (values) => {
     await firebase
       .auth()
-      .confirmPasswordReset(actionCode, data.passwordOne)
+      .confirmPasswordReset(actionCode, values.passwordOne)
       .then(() => {
         setData({ success: true });
       })
       .catch((err) => {
-        setData({ error: err.message });
+        setData({ error: firebaseErrors[err.code] || err.message });
       });
-  };
-
-  const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
   };
 
   return (
@@ -92,85 +105,119 @@ const ResetPassword = ({ actionCode }) => {
             Cambiar contraseña
           </button>
         </div>
-        <Modal isOpen={modal} toggle={toggle}>
-          {!data.success ? (
-            <ModalHeader toggle={toggle}>
-              <div className="heading-list">
-                <header className="heading-list--list">
-                  Cambiar contraseña
-                </header>
-              </div>
-            </ModalHeader>
-          ) : null}
+        <Formik
+          validationSchema={validateSchema}
+          initialValues={initialValues}
+          onSubmit={(values) => {
+            handleResetPassword(values);
+          }}
+        >
+          {(props) => (
+            <Modal isOpen={modal} toggle={toggle}>
+              {!data.success ? (
+                <ModalHeader toggle={toggle}>
+                  <div className="heading-list">
+                    <header className="heading-list--list">
+                      Cambiar contraseña
+                    </header>
+                  </div>
+                </ModalHeader>
+              ) : null}
 
-          <ModalBody>
-            {data.success ? (
-              <Alert style={{ fontSize: "1.5rem" }}>
-                Su contraseña se cambió con éxito.
-              </Alert>
-            ) : (
-              <Card>
-                <CardBody>
-                  <Form onSubmit={handleResetPassword}>
-                    <FormGroup>
-                      <Label style={{ fontSize: "1.5rem" }} for="password">
-                        Contraseña
-                      </Label>
-                      <Input
-                        onChange={handleChange}
-                        style={{ fontSize: "1.5rem" }}
-                        type="password"
-                        value={data.passwordOne}
-                        name="passwordOne"
-                      />
-                    </FormGroup>
-                    <FormGroup>
-                      <Label
-                        style={{ fontSize: "1.5rem" }}
-                        for="password-confirm"
-                      >
-                        Confirmar Contraseña
-                      </Label>
-                      <Input
-                        onChange={handleChange}
-                        style={{ fontSize: "1.5rem" }}
-                        type="password"
-                        value={data.passwordTwo}
-                        name="passwordTwo"
-                      />
-                    </FormGroup>
-                  </Form>
-                </CardBody>
-              </Card>
-            )}
+              <ModalBody>
+                {data.success ? (
+                  <Alert style={{ fontSize: "1.5rem" }}>
+                    Su contraseña se cambió con éxito.
+                  </Alert>
+                ) : (
+                  <Card>
+                    <CardBody>
+                      <Form onSubmit={props.handleSubmit}>
+                        <FormGroup>
+                          <Label style={{ fontSize: "1.5rem" }} for="password">
+                            Contraseña
+                          </Label>
+                          <Input
+                            onChange={props.handleChange}
+                            onBlur={props.handleBlur}
+                            style={{ fontSize: "1.5rem" }}
+                            type="password"
+                            value={props.values.passwordOne}
+                            name="passwordOne"
+                          />
+                          {props.errors.passwordOne &&
+                          props.touched.passwordOne ? (
+                            <div
+                              style={{ fontSize: "1.5rem" }}
+                              className="text-danger"
+                            >
+                              <i className="fas fa-times mr-1" />
+                              {props.errors.passwordOne}
+                            </div>
+                          ) : null}
+                        </FormGroup>
+                        <FormGroup>
+                          <Label
+                            style={{ fontSize: "1.5rem" }}
+                            for="password-confirm"
+                          >
+                            Confirmar Contraseña
+                          </Label>
+                          <Input
+                            onChange={props.handleChange}
+                            onBlur={props.handleBlur}
+                            style={{ fontSize: "1.5rem" }}
+                            type="password"
+                            value={props.values.passwordTwo}
+                            name="passwordTwo"
+                          />
+                          {props.errors.passwordTwo &&
+                          props.touched.passwordTwo ? (
+                            <div
+                              style={{ fontSize: "1.5rem" }}
+                              className="text-danger"
+                            >
+                              <i className="fas fa-times mr-1" />
+                              {props.errors.passwordTwo}
+                            </div>
+                          ) : null}
+                        </FormGroup>
+                      </Form>
+                    </CardBody>
+                  </Card>
+                )}
 
-            {data.error ? (
-              <Alert style={{ fontSize: "1.6rem" }} color="danger">
-                {data.error}
-              </Alert>
-            ) : null}
-          </ModalBody>
-          {data.success ? (
-            <ModalFooter>
-              <Link className="btn btn--dark" to="/">
-                Iniciar
-              </Link>
-            </ModalFooter>
-          ) : (
-            <ModalFooter>
-              <button
-                disabled={!data.passwordOne && !data.passwordTwo}
-                className="btn btn--dark"
-                onClick={handleResetPassword}
-              >
-                Guardar
-              </button>
-              <button className="btn btn--dark" onClick={toggle}>
-                Cancelar
-              </button>
-            </ModalFooter>
+                {data.error ? (
+                  <Alert style={{ fontSize: "1.6rem" }} color="danger">
+                    {data.error}
+                  </Alert>
+                ) : null}
+              </ModalBody>
+              {data.success ? (
+                <ModalFooter>
+                  <Link className="btn btn--dark" to="/">
+                    Iniciar
+                  </Link>
+                </ModalFooter>
+              ) : (
+                <ModalFooter>
+                  <button
+                    disabled={
+                      !props.values.passwordOne && !props.values.passwordTwo
+                    }
+                    className="btn btn--dark"
+                    onClick={props.handleSubmit}
+                  >
+                    Guardar
+                  </button>
+                  <button className="btn btn--dark" onClick={toggle}>
+                    Cancelar
+                  </button>
+                </ModalFooter>
+              )}
+            </Modal>
           )}
-        </Modal>
+        </Formik>
       </header>
       <main></main>
 
