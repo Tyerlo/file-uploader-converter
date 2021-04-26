@@ -18,9 +18,9 @@ import useAuthState from "../context/auth";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { firebaseErrors } from "../context/firebaseErrors";
+
 const Register = ({ toggle, modal }) => {
   const [data, setData] = useState({
-    isAdmin: false,
     error: null,
     formSent: false,
     working: false
@@ -29,12 +29,7 @@ const Register = ({ toggle, modal }) => {
   const [user, loading, error] = useAuthState(firebase);
 
   const handleSubmit = async (values) => {
-    const roles = {};
     setData({ ...data, error: null });
-
-    if (data.isAdmin) {
-      roles["SUBSCRIBER"] = "SUBSCRIBER";
-    }
 
     await firebase
       .auth()
@@ -46,6 +41,12 @@ const Register = ({ toggle, modal }) => {
         let user = firebase.auth().currentUser;
         user.sendEmailVerification().then(() => {
           setData({ ...data, formSent: true, working: false });
+        });
+
+        firebase.firestore().collection("users").add({
+          uid: user.uid,
+          email: user.email,
+          username: values.ruc
         });
       })
       .catch((err) => {

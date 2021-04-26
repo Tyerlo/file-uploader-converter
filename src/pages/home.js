@@ -32,11 +32,11 @@ const Home = () => {
             <button className="btn btn--dark" onClick={handleLogout}>
               Cerrar sesion
             </button>
-            {/* <h1 className="heading-primary">
+            <h1 className="heading-primary">
               <span className="heading-primary--welcome">
-                Bienvenido {user.user_metadata.full_name}
+                Bienvenido {user.email}
               </span>
-            </h1> */}
+            </h1>
           </div>
         ) : (
           <Fragment>
