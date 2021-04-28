@@ -10,7 +10,7 @@ import {
 import firebase from "gatsby-plugin-firebase";
 import useAuthState from "../context/auth";
 import { Formik } from "formik";
-import * as Yup from "yup";
+import { validateSchema, initialValues } from "../util/ValidationFormik";
 import { firebaseErrors } from "../context/firebaseErrors";
 import CardRegister from "../components/CardRegister";
 
@@ -37,13 +37,15 @@ const Register = ({ toggle, modal }) => {
         user.sendEmailVerification().then(() => {
           setData({ ...data, formSent: true, working: false });
         });
-        user.updateProfile({
-          displayName: values.ruc
-        });
+
         firebase.firestore().collection("users").add({
           uid: user.uid,
           email: user.email,
-          username: values.ruc
+          ruc: values.ruc,
+          ruc2: values.ruc2,
+          ruc3: values.ruc3,
+          ruc4: values.ruc4,
+          ruc5: values.ruc5
         });
       })
       .catch((err) => {
@@ -53,33 +55,6 @@ const Register = ({ toggle, modal }) => {
           working: false
         });
       });
-  };
-
-  const validateSchema = Yup.object({
-    ruc: Yup.string()
-      .required("Ruc requerido")
-      .matches(/^[0-9]+$/, "Solo numeros")
-      .min(13, "Debe tener exactamente 13 digitos")
-      .max(13, "Debe tener exactamente 13 digitos"),
-    email: Yup.string()
-      .email("Correo invalido")
-      .required("Correo electronico requerido"),
-    passwordOne: Yup.string()
-      .required("Por favor, introduzca su contraseña")
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})/,
-        "Debe contener 6 caracteres, una mayúscula, una minúscula, un número y un carácter en mayúsculas y minúsculas"
-      ),
-    passwordTwo: Yup.string()
-      .required("Por favor, confirmar su contraseña")
-      .oneOf([Yup.ref("passwordOne"), null], "Las contraseñas no coinciden")
-  });
-
-  const initialValues = {
-    ruc: "",
-    email: "",
-    passwordOne: "",
-    passwordTwo: ""
   };
 
   return (

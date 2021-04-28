@@ -1,50 +1,42 @@
 import React, { useState } from "react";
 import { Form, FormGroup, Label, Input, Card, CardBody } from "reactstrap";
+import FieldRucs from "./FieldRucs";
+
 const CardRegister = ({ props }) => {
-  const [charLeft] = useState(13);
+  const [selectedValue, setSelectedValue] = useState(0);
+
   return (
     <Card>
       <CardBody>
         <Form onSubmit={props.handleSubmit}>
           <FormGroup>
             <Label style={{ fontSize: "1.5rem" }} for="exampleSelect">
-              Elegir cuantos ruc
+              Cantidad de rucs
             </Label>
             <Input
               style={{ fontSize: "1.5rem" }}
               type="select"
               name="selectRuc"
-            >
-              <option selected={1}>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-            </Input>
-          </FormGroup>
-          <FormGroup>
-            <Label style={{ fontSize: "1.5rem" }} for="email">
-              Ruc
-            </Label>
-            <Input
-              onChange={props.handleChange}
+              onChange={(e) => setSelectedValue(e.target.value)}
               onBlur={props.handleBlur}
-              style={{ fontSize: "1.5rem" }}
-              type="text"
-              value={props.values.ruc}
-              name="ruc"
-              maxLength={13}
-            />
-            {props.errors.ruc && props.touched.ruc ? (
+              value={selectedValue}
+            >
+              <option value={0}>Elegir cuantos ruc</option>
+              <option value={1}>1</option>
+              <option value={2}>2</option>
+              <option value={3}>3</option>
+              <option value={4}>4</option>
+              <option value={5}>5</option>
+            </Input>
+            {selectedValue === "0" ? (
               <div style={{ fontSize: "1.5rem" }} className="text-danger">
                 <i className="fas fa-times mr-1" />
-                {props.errors.ruc}
+                Ruc requerido
               </div>
             ) : null}
-            <p style={{ fontSize: "1.5rem" }} className="float-right">
-              {props.values.ruc.length}/{charLeft}
-            </p>
           </FormGroup>
+          <FieldRucs selectedValue={selectedValue} props={props} />
+
           <FormGroup>
             <Label style={{ fontSize: "1.5rem" }} for="email">
               Correo
