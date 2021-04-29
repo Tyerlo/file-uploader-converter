@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Footer from "./Footer";
+import Footer from "./footer";
 import firebase from "gatsby-plugin-firebase";
 import {
   Modal,

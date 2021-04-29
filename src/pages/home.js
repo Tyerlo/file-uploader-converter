@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import Footer from "./Footer";
+import Footer from "./footer";
 import UploadFiles from "../components/UploadFiles";
 import firebase from "gatsby-plugin-firebase";
 import useAuthState from "../context/auth";
