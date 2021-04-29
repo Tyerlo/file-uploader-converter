@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Alert } from "reactstrap";
 import { navigate } from "gatsby";
-import Footer from "../components/Footer";
+import Footer from "./Footer";
 import firebase from "gatsby-plugin-firebase";
 
 const VerificationPage = ({ actionCode }) => {

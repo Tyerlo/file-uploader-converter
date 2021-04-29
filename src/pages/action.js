@@ -2,7 +2,7 @@ import React from "react";
 import VerifyEmail from "./verifyEmail";
 import ResetPassword from "./resetPassword";
 import queryString from "query-string";
-import Footer from "../components/Footer";
+import Footer from "./Footer";
 import { Link } from "gatsby";
 import "../../styles/sass/main.scss";
 
