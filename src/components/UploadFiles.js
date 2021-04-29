@@ -1,12 +1,14 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import SaveFileName from "./SaveFileName";
 import { Fragment } from "react";
 import { readAllFiles } from "../util/ReadFiles";
+import firebase from "gatsby-plugin-firebase";
 
 const UploadFiles = () => {
   const [fileContent, setFileContent] = useState([]);
   const [files, setFilesUpload] = useState([]);
+  const [users, setUsers] = useState([]);
 
   const onDrop = useCallback(
     async (acceptedFiles) => {
@@ -28,6 +30,27 @@ const UploadFiles = () => {
     setFileContent([]);
     setFilesUpload([]);
   };
+  const fetchUsers = async () => {
+    const response = firebase.firestore().collection("users");
+    const data = await response.get();
+    data.forEach((items) => {
+      setUsers([...users, items.data()]);
+    });
+  };
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const ruc = fileContent.map((file) =>
+    file
+      ? (
+          (
+            (((file.autorizacion || {}).comprobante || {}).factura || {})
+              .infoTributaria || {}
+          ).ruc || {}
+        )._text || {}
+      : null
+  );
 
   return (
     <Fragment>
@@ -56,6 +79,12 @@ const UploadFiles = () => {
             </h4>
           </div>
         ) : null}
+        {users &&
+          users.map((user) => {
+            if (ruc.toString() !== user.ruc.toString()) {
+              //TODO if they are not equal reject the file upload
+            }
+          })}
         {files.length > 0 ? (
           <Fragment>
             <div className="heading-list">
