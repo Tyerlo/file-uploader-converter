@@ -5,6 +5,21 @@ import FieldRucs from "./FieldRucs";
 const CardRegister = ({ props }) => {
   const [selectedValue, setSelectedValue] = useState(0);
 
+  const handleChange = (e) => {
+    setSelectedValue(e.target.value);
+    const { values, resetForm } = props;
+
+    if (selectedValue === "4") {
+      return resetForm({ ...values, ruc5: "" });
+    } else if (selectedValue === "3") {
+      return resetForm({ ...values, ruc4: "" });
+    } else if (selectedValue === "2") {
+      return resetForm({ ...values, ruc3: "" });
+    } else if (selectedValue === "1") {
+      return resetForm({ ...values, ruc2: "" });
+    }
+  };
+
   return (
     <Card>
       <CardBody>
@@ -17,7 +32,7 @@ const CardRegister = ({ props }) => {
               style={{ fontSize: "1.5rem" }}
               type="select"
               name="selectRuc"
-              onChange={(e) => setSelectedValue(e.target.value)}
+              onChange={handleChange}
               onBlur={props.handleBlur}
               value={selectedValue}
             >

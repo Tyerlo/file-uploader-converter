@@ -38,15 +38,20 @@ const Register = ({ toggle, modal }) => {
           setData({ ...data, formSent: true, working: false });
         });
 
-        firebase.firestore().collection("users").add({
-          uid: user.uid,
-          email: user.email,
-          ruc: values.ruc,
-          ruc2: values.ruc2,
-          ruc3: values.ruc3,
-          ruc4: values.ruc4,
-          ruc5: values.ruc5
-        });
+        firebase
+          .firestore()
+          .collection("users")
+          .add({
+            uid: user.uid,
+            email: user.email,
+            ruc: [
+              values.ruc,
+              values.ruc2,
+              values.ruc3,
+              values.ruc4,
+              values.ruc5
+            ]
+          });
       })
       .catch((err) => {
         setData({
