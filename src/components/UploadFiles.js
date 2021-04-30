@@ -30,14 +30,16 @@ const UploadFiles = () => {
     setFileContent([]);
     setFilesUpload([]);
   };
-  const fetchUsers = async () => {
-    const response = firebase.firestore().collection("users");
-    const data = await response.get();
-    data.forEach((items) => {
-      setUsers([...users, items.data()]);
-    });
-  };
+
   useEffect(() => {
+    const fetchUsers = async () => {
+      const response = firebase.firestore().collection("users");
+      const data = await response.get();
+
+      data.forEach((items) => {
+        setUsers({ ...items.data() });
+      });
+    };
     fetchUsers();
   }, []);
 
@@ -51,6 +53,8 @@ const UploadFiles = () => {
         )._text || {}
       : null
   );
+
+  const isRucSame = ruc.some((item) => users.ruc.includes(item));
 
   return (
     <Fragment>
@@ -67,6 +71,7 @@ const UploadFiles = () => {
         </div>
         <em></em>
       </section>
+
       <section className="section-listing">
         {fileRejections.length > 100 ? (
           <div className="heading-list">
@@ -79,13 +84,8 @@ const UploadFiles = () => {
             </h4>
           </div>
         ) : null}
-        {users &&
-          users.map((user) => {
-            if (ruc.toString() !== user.ruc.toString()) {
-              //TODO if they are not equal reject the file upload
-            }
-          })}
-        {files.length > 0 ? (
+
+        {files.length > 0 && isRucSame && (
           <Fragment>
             <div className="heading-list">
               <h4 className="heading-list--list">
@@ -94,15 +94,32 @@ const UploadFiles = () => {
             </div>
             <div className="list">
               <ul>
+                {ruc.map((file, index) => (
+                  <li key={index}>{file}</li>
+                ))}
+              </ul>
+              {/* <ul>
                 {files.map((file, index) => (
                   <li key={index}>{file.name}</li>
                 ))}
-              </ul>
+              </ul> */}
             </div>
           </Fragment>
-        ) : null}
+        )}
 
-        {typeof fileContent !== "undefined" && fileContent.length > 0 ? (
+        {files.length > 0 && !isRucSame && (
+          <p className="text-danger">
+            <i className="fas fa-times mr-1" />
+            El archivo no corresponde al registrado
+            {ruc.map((file, index) => (
+              <li key={index}>{file}</li>
+            ))}
+          </p>
+        )}
+
+        {typeof fileContent !== "undefined" &&
+        fileContent.length > 0 &&
+        isRucSame ? (
           <SaveFileName
             files={files}
             data={fileContent}
