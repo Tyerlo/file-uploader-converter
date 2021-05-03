@@ -54,8 +54,17 @@ const UploadFiles = () => {
       : null
   );
 
-  const isRucSame = ruc.some((item) => users.ruc.includes(item));
+  const isRucSame = () => {
+    if (ruc.every((item) => users.ruc.includes(item))) {
+      return true;
+    }
 
+    if (ruc.filter((item) => !users.ruc.includes(item))) {
+      return false;
+    }
+  };
+
+  const isValidRuc = ruc.filter((item) => !users.ruc.includes(item));
   return (
     <Fragment>
       <section className="section-upload">
@@ -71,7 +80,6 @@ const UploadFiles = () => {
         </div>
         <em></em>
       </section>
-
       <section className="section-listing">
         {fileRejections.length > 100 ? (
           <div className="heading-list">
@@ -85,7 +93,7 @@ const UploadFiles = () => {
           </div>
         ) : null}
 
-        {files.length > 0 && isRucSame && (
+        {files.length > 0 && isRucSame() === true ? (
           <Fragment>
             <div className="heading-list">
               <h4 className="heading-list--list">
@@ -98,28 +106,25 @@ const UploadFiles = () => {
                   <li key={index}>{file}</li>
                 ))}
               </ul>
-              {/* <ul>
-                {files.map((file, index) => (
-                  <li key={index}>{file.name}</li>
-                ))}
-              </ul> */}
             </div>
           </Fragment>
-        )}
-
-        {files.length > 0 && !isRucSame && (
-          <p className="text-danger">
-            <i className="fas fa-times mr-1" />
-            El archivo no corresponde al registrado
-            {ruc.map((file, index) => (
-              <li key={index}>{file}</li>
-            ))}
-          </p>
-        )}
-
+        ) : files.length > 0 && isRucSame() === false ? (
+          <Fragment>
+            <p className="text-danger">
+              <i className="fas fa-times mr-1" />
+              El archivo no corresponde al registrado
+              <li>{isValidRuc}</li>
+            </p>
+            <div className="d-flex justify-content-center align-items-center mt-4 mb-4">
+              <button className=" btn btn--dark" onClick={removeAll}>
+                Borrar
+              </button>
+            </div>
+          </Fragment>
+        ) : null}
         {typeof fileContent !== "undefined" &&
         fileContent.length > 0 &&
-        isRucSame ? (
+        isRucSame() === true ? (
           <SaveFileName
             files={files}
             data={fileContent}
