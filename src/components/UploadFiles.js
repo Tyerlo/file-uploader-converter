@@ -4,7 +4,7 @@ import SaveFileName from "./SaveFileName";
 import { Fragment } from "react";
 import { readAllFiles } from "../util/ReadFiles";
 import firebase from "gatsby-plugin-firebase";
-
+import ShowUserRuc from "../components/ShowUserRuc";
 const UploadFiles = () => {
   const [fileContent, setFileContent] = useState([]);
   const [files, setFilesUpload] = useState([]);
@@ -64,7 +64,9 @@ const UploadFiles = () => {
     }
   };
 
-  const isValidRuc = ruc.filter((item) => !users.ruc.includes(item));
+  const notValidRuc = ruc.filter((item) => !users.ruc.includes(item));
+  const isValidRuc = ruc.filter((item) => users.ruc.includes(item));
+
   return (
     <Fragment>
       <section className="section-upload">
@@ -78,8 +80,12 @@ const UploadFiles = () => {
           </p>
           <em>Subir archivos *.xml</em>
         </div>
-        <em></em>
+
+        <div className="rucs-register">
+          <ShowUserRuc rucs={users} />
+        </div>
       </section>
+
       <section className="section-listing">
         {fileRejections.length > 100 ? (
           <div className="heading-list">
@@ -102,7 +108,7 @@ const UploadFiles = () => {
             </div>
             <div className="list">
               <ul>
-                {ruc.map((file, index) => (
+                {isValidRuc.map((file, index) => (
                   <li key={index}>{file}</li>
                 ))}
               </ul>
@@ -110,11 +116,17 @@ const UploadFiles = () => {
           </Fragment>
         ) : files.length > 0 && isRucSame() === false ? (
           <Fragment>
-            <p className="text-danger">
+            <div className="text-danger">
               <i className="fas fa-times mr-1" />
-              El archivo no corresponde al registrado
-              <li>{isValidRuc}</li>
-            </p>
+              El archivos no corresponde al registrado
+              <div className="list">
+                <ul>
+                  {notValidRuc.map((file, index) => (
+                    <li key={index}>{file}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
             <div className="d-flex justify-content-center align-items-center mt-4 mb-4">
               <button className=" btn btn--dark" onClick={removeAll}>
                 Borrar
@@ -122,6 +134,7 @@ const UploadFiles = () => {
             </div>
           </Fragment>
         ) : null}
+
         {typeof fileContent !== "undefined" &&
         fileContent.length > 0 &&
         isRucSame() === true ? (
