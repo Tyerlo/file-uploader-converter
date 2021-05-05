@@ -49,7 +49,7 @@ const DropDownRuc = ({ props }) => {
         </div>
       ) : null}
       <p style={{ fontSize: "1.5rem" }} className="float-right">
-        {props.values.ruc2 && props.values.ruc2.length}/{charLeft}
+        {props.values.ruc2.length}/{charLeft}
       </p>
     </FormGroup>
   );
@@ -74,7 +74,7 @@ const DropDownRuc = ({ props }) => {
         </div>
       ) : null}
       <p style={{ fontSize: "1.5rem" }} className="float-right">
-        {props.values.ruc3 && props.values.ruc3.length}/{charLeft}
+        {props.values.ruc3.length}/{charLeft}
       </p>
     </FormGroup>
   );
@@ -99,7 +99,7 @@ const DropDownRuc = ({ props }) => {
         </div>
       ) : null}
       <p style={{ fontSize: "1.5rem" }} className="float-right">
-        {props.values.ruc4 && props.values.ruc4.length}/{charLeft}
+        {props.values.ruc4.length}/{charLeft}
       </p>
     </FormGroup>
   );
@@ -124,7 +124,7 @@ const DropDownRuc = ({ props }) => {
         </div>
       ) : null}
       <p style={{ fontSize: "1.5rem" }} className="float-right">
-        {props.values.ruc5 && props.values.ruc5.length}/{charLeft}
+        {props.values.ruc5.length}/{charLeft}
       </p>
     </FormGroup>
   );
