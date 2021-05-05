@@ -1,5 +1,8 @@
 import * as Yup from "yup";
 export const validateSchema = Yup.object({
+  selectRuc: Yup.string()
+    .oneOf(["1", "2", "3", "4", "5"], null)
+    .required("Elegir un ruc"),
   ruc: Yup.string()
     .required("Ruc requerido")
     .matches(/^[0-9]+$/, "Solo numeros")
@@ -45,6 +48,7 @@ export const initialValues = {
   ruc3: "",
   ruc4: "",
   ruc5: "",
+  selectRuc: "",
   email: "",
   passwordOne: "",
   passwordTwo: ""

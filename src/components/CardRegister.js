@@ -1,57 +1,46 @@
-import React, { useState } from "react";
+import { useField } from "formik";
+import React, { Fragment } from "react";
 import { Form, FormGroup, Label, Input, Card, CardBody } from "reactstrap";
-import FieldRucs from "./FieldRucs";
+import DropDownRuc from "./DropDownRuc";
 
 const CardRegister = ({ props }) => {
-  const [selectedValue, setSelectedValue] = useState(0);
-
-  const handleChange = (e) => {
-    setSelectedValue(e.target.value);
-    const { values, resetForm } = props;
-
-    if (selectedValue === "4") {
-      return resetForm({ ...values, ruc5: "" });
-    } else if (selectedValue === "3") {
-      return resetForm({ ...values, ruc4: "" });
-    } else if (selectedValue === "2") {
-      return resetForm({ ...values, ruc3: "" });
-    } else if (selectedValue === "1") {
-      return resetForm({ ...values, ruc2: "" });
-    }
+  const MySelect = ({ label, ...props }) => {
+    const [field, meta] = useField(props);
+    return (
+      <Fragment>
+        <Label style={{ fontSize: "1.5rem" }} htmlFor={props.id || props.name}>
+          {label}
+        </Label>
+        <Input
+          style={{ fontSize: "1.5rem" }}
+          type="select"
+          {...field}
+          {...props}
+        />
+        {meta.touched && meta.error ? (
+          <div style={{ fontSize: "1.5rem" }} className="text-danger">
+            <i className="fas fa-times mr-1" />
+            {meta.error}
+          </div>
+        ) : null}
+      </Fragment>
+    );
   };
-
   return (
     <Card>
       <CardBody>
         <Form onSubmit={props.handleSubmit}>
           <FormGroup>
-            <Label style={{ fontSize: "1.5rem" }} for="exampleSelect">
-              Cantidad de rucs
-            </Label>
-            <Input
-              style={{ fontSize: "1.5rem" }}
-              type="select"
-              name="selectRuc"
-              onChange={handleChange}
-              onBlur={props.handleBlur}
-              value={selectedValue}
-            >
-              <option value={0}>Elegir cuantos ruc</option>
+            <MySelect label="Cantidad de Ruc" name="selectRuc">
+              <option value="">Elegir cuantos ruc</option>
               <option value={1}>1</option>
               <option value={2}>2</option>
               <option value={3}>3</option>
               <option value={4}>4</option>
               <option value={5}>5</option>
-            </Input>
-            {selectedValue === "0" ? (
-              <div style={{ fontSize: "1.5rem" }} className="text-danger">
-                <i className="fas fa-times mr-1" />
-                Ruc requerido
-              </div>
-            ) : null}
+            </MySelect>
           </FormGroup>
-          <FieldRucs selectedValue={selectedValue} props={props} />
-
+          <DropDownRuc props={props} />
           <FormGroup>
             <Label style={{ fontSize: "1.5rem" }} for="email">
               Correo
