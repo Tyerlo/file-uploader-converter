@@ -13,6 +13,7 @@ import { Formik } from "formik";
 import { validateSchema, initialValues } from "../util/ValidationFormik";
 import { firebaseErrors } from "../context/firebaseErrors";
 import CardRegister from "../components/CardRegister";
+import dateFormat from "dateformat";
 
 const Register = ({ toggle, modal }) => {
   const [data, setData] = useState({
@@ -22,6 +23,8 @@ const Register = ({ toggle, modal }) => {
   });
 
   const [user, loading, error] = useAuthState(firebase);
+  let now = new Date();
+  let dateCreated = dateFormat(now, "yyyy-mm-dd HH:MM:ss");
 
   const handleSubmit = async (values) => {
     setData({ ...data, error: null });
@@ -50,7 +53,9 @@ const Register = ({ toggle, modal }) => {
               values.ruc3,
               values.ruc4,
               values.ruc5
-            ]
+            ],
+            selectedRucs: values.selectRuc,
+            createdAt: dateCreated
           });
       })
       .catch((err) => {

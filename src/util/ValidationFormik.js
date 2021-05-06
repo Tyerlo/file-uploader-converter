@@ -9,22 +9,38 @@ export const validateSchema = Yup.object({
     .min(13, "Debe tener exactamente 13 digitos")
     .max(13, "Debe tener exactamente 13 digitos"),
   ruc2: Yup.string()
-    .required("Ruc #2 requerido")
+    .notRequired()
+    .when("selectRuc", {
+      is: (val) => val === "1",
+      otherwise: Yup.string().required("Ruc #2 requerido")
+    })
     .matches(/^[0-9]+$/, "Solo numeros")
     .min(13, "Debe tener exactamente 13 digitos")
     .max(13, "Debe tener exactamente 13 digitos"),
   ruc3: Yup.string()
-    .required("Ruc #3 requerido")
+    .notRequired()
+    .when("selectRuc", {
+      is: (val) => val === "1" || val === "2",
+      otherwise: Yup.string().required("Ruc #3 requerido")
+    })
     .matches(/^[0-9]+$/, "Solo numeros")
     .min(13, "Debe tener exactamente 13 digitos")
     .max(13, "Debe tener exactamente 13 digitos"),
   ruc4: Yup.string()
-    .required("Ruc #4 requerido")
+    .notRequired()
+    .when("selectRuc", {
+      is: (val) => val === "1" || val === "2" || val === "3",
+      otherwise: Yup.string().required("Ruc #4 requerido")
+    })
     .matches(/^[0-9]+$/, "Solo numeros")
     .min(13, "Debe tener exactamente 13 digitos")
     .max(13, "Debe tener exactamente 13 digitos"),
   ruc5: Yup.string()
-    .required("Ruc #5 requerido")
+    .notRequired()
+    .when("selectRuc", {
+      is: (val) => val === "1" || val === "2" || val === "3" || val === "4",
+      otherwise: Yup.string().required("Ruc #5 requerido")
+    })
     .matches(/^[0-9]+$/, "Solo numeros")
     .min(13, "Debe tener exactamente 13 digitos")
     .max(13, "Debe tener exactamente 13 digitos"),
