@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({});
 
 module.exports = {
   siteMetadata: {
@@ -19,6 +19,14 @@ module.exports = {
           appId: process.env.appId,
           measurementId: process.env.measurementId
         }
+      }
+    },
+    {
+      resolve: `gatsby-source-stripe`,
+      options: {
+        objects: ["Price"],
+        secretKey: process.env.GATSBY_STRIPE_SECRET_KEY,
+        downloadFiles: false
       }
     }
   ]

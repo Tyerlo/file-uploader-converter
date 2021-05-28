@@ -4,8 +4,17 @@ import { Form, FormGroup, Label, Input, Card, CardBody } from "reactstrap";
 import DropDownRuc from "./DropDownRuc";
 
 const CardRegister = ({ props }) => {
-  const MySelect = ({ label, ...props }) => {
+  // const resetForm = (e) => {
+  //   const { values, setFieldValue } = props;
+  //   console.log(e.target.value);
+
+  //   if (e.target.value === "1") {
+  //     setFieldValue("ruc2", "");
+  //   }
+  // };
+  const MySelect = ({ label, setFieldValue, ...props }) => {
     const [field, meta] = useField(props);
+
     return (
       <Fragment>
         <Label style={{ fontSize: "1.5rem" }} htmlFor={props.id || props.name}>
@@ -30,7 +39,7 @@ const CardRegister = ({ props }) => {
     <Card>
       <CardBody>
         <Form onSubmit={props.handleSubmit}>
-          <FormGroup>
+          {/* <FormGroup>
             <MySelect label="Cantidad de Ruc" name="selectRuc">
               <option value="">Elegir cuantos ruc</option>
               <option value={1}>1</option>
@@ -40,7 +49,7 @@ const CardRegister = ({ props }) => {
               <option value={5}>5</option>
             </MySelect>
           </FormGroup>
-          <DropDownRuc props={props} />
+          <DropDownRuc props={props} /> */}
           <FormGroup>
             <Label style={{ fontSize: "1.5rem" }} for="email">
               Correo

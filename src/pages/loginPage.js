@@ -36,7 +36,6 @@ const LoginPage = ({ loginToggle, modal, setModal }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const roles = {};
     setData({ ...data, error: null });
 
     await firebase
@@ -121,8 +120,14 @@ const LoginPage = ({ loginToggle, modal, setModal }) => {
         </div>
 
         <ModalFooter>
+          {user && !user.emailVerified && (
+            <div style={{ fontSize: "1.5rem" }} className="text-danger">
+              <i className="fas fa-times mr-1" />
+              Verificar correo primero
+            </div>
+          )}
           <button
-            disabled={loading}
+            disabled={user && !user.emailVerified}
             className="btn btn--dark"
             onClick={handleSubmit}
           >

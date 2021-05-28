@@ -5,6 +5,8 @@ import firebase from "gatsby-plugin-firebase";
 import useAuthState from "../context/auth";
 import Register from "../pages/register";
 import LoginPage from "../pages/loginPage";
+import Products from "../components/Products";
+
 const Home = () => {
   const [modal, setModal] = useState(false);
   const [loginModal, setLoginModal] = useState(false);
@@ -54,9 +56,11 @@ const Home = () => {
       <main>
         {user && user.emailVerified ? (
           <div className="header__drop-zone">
-            <UploadFiles />
+            <Products />
           </div>
         ) : null}
+
+        {/* <UploadFiles /> */}
       </main>
 
       <Footer />
