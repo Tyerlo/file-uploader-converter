@@ -68,3 +68,16 @@
     }
   }
 }
+
+.dropdown-item:hover {
+  a {
+    text-decoration: none;
+    &:hover {
+      color: $color-white;
+    }
+    &:visited {
+      color: $color-white;
+    }
+  }
+  background-color: #084da9;
+}

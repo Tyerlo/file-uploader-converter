@@ -20,7 +20,7 @@ const ProductCard = ({ product }) => {
       .collection("checkout_sessions")
       .add({
         price: priceId,
-        plan: product.name,
+        collect_shipping_address: true,
         success_url: window.location.origin,
         cancel_url: window.location.origin
       });

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Footer from "./footer";
 import UploadFiles from "../components/UploadFiles";
 import firebase from "gatsby-plugin-firebase";
@@ -6,6 +6,7 @@ import useAuthState from "../context/auth";
 import Register from "../pages/register";
 import LoginPage from "../pages/loginPage";
 import Products from "../components/Products";
+import DropDownMenu from "../components/DropDownMenu";
 
 const Home = () => {
   const [modal, setModal] = useState(false);
@@ -20,6 +21,19 @@ const Home = () => {
 
   const loginToggle = () => setLoginModal(!loginModal);
 
+  // useEffect(() => {
+  //   await firebase
+  //     .firestore()
+  //     .collection("subscriptions")
+  //     .doc(user.uid)
+  //     .collection("checkout_sessions")
+  //     .add({
+  //       price: priceId,
+  //       plan: product.name,
+  //       success_url: window.location.origin,
+  //       cancel_url: window.location.origin
+  //     });
+  // }, []);
   return (
     <div>
       <header className="header">
@@ -31,9 +45,7 @@ const Home = () => {
         </div>
         {user && user.emailVerified ? (
           <div className="btn--user-info">
-            <button className="btn btn--dark" onClick={handleLogout}>
-              Cerrar sesion
-            </button>
+            <DropDownMenu handleLogout={handleLogout} />
             <h1 className="heading-primary">
               <span className="heading-primary--welcome">
                 Bienvenido {user.email}
