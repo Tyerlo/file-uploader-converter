@@ -1,55 +1,11 @@
-import { useField } from "formik";
-import React, { Fragment } from "react";
+import React from "react";
 import { Form, FormGroup, Label, Input, Card, CardBody } from "reactstrap";
-import DropDownRuc from "./DropDownRuc";
 
 const CardRegister = ({ props }) => {
-  // const resetForm = (e) => {
-  //   const { values, setFieldValue } = props;
-  //   console.log(e.target.value);
-
-  //   if (e.target.value === "1") {
-  //     setFieldValue("ruc2", "");
-  //   }
-  // };
-  const MySelect = ({ label, setFieldValue, ...props }) => {
-    const [field, meta] = useField(props);
-
-    return (
-      <Fragment>
-        <Label style={{ fontSize: "1.5rem" }} htmlFor={props.id || props.name}>
-          {label}
-        </Label>
-        <Input
-          style={{ fontSize: "1.5rem" }}
-          type="select"
-          {...field}
-          {...props}
-        />
-        {meta.touched && meta.error ? (
-          <div style={{ fontSize: "1.5rem" }} className="text-danger">
-            <i className="fas fa-times mr-1" />
-            {meta.error}
-          </div>
-        ) : null}
-      </Fragment>
-    );
-  };
   return (
     <Card>
       <CardBody>
         <Form onSubmit={props.handleSubmit}>
-          {/* <FormGroup>
-            <MySelect label="Cantidad de Ruc" name="selectRuc">
-              <option value="">Elegir cuantos ruc</option>
-              <option value={1}>1</option>
-              <option value={2}>2</option>
-              <option value={3}>3</option>
-              <option value={4}>4</option>
-              <option value={5}>5</option>
-            </MySelect>
-          </FormGroup>
-          <DropDownRuc props={props} /> */}
           <FormGroup>
             <Label style={{ fontSize: "1.5rem" }} for="email">
               Correo

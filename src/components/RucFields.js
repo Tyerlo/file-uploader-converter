@@ -1,11 +1,11 @@
 import React, { useState, Fragment } from "react";
 import { FormGroup, Label, Input } from "reactstrap";
-const DropDownRuc = ({ props }) => {
+const DropDownRuc = ({ props, planRuc }) => {
   const [charLeft] = useState(13);
 
   const ruc1 = (
     <FormGroup>
-      <Label style={{ fontSize: "1.5rem" }} for="email">
+      <Label style={{ fontSize: "1.5rem" }} for="ruc">
         Ruc
       </Label>
       <Input
@@ -30,7 +30,7 @@ const DropDownRuc = ({ props }) => {
   );
   const ruc2 = (
     <FormGroup>
-      <Label style={{ fontSize: "1.5rem" }} for="email">
+      <Label style={{ fontSize: "1.5rem" }} for="ruc2">
         Ruc #2
       </Label>
       <Input
@@ -55,7 +55,7 @@ const DropDownRuc = ({ props }) => {
   );
   const ruc3 = (
     <FormGroup>
-      <Label style={{ fontSize: "1.5rem" }} for="email">
+      <Label style={{ fontSize: "1.5rem" }} for="ruc3">
         Ruc #3
       </Label>
       <Input
@@ -80,7 +80,7 @@ const DropDownRuc = ({ props }) => {
   );
   const ruc4 = (
     <FormGroup>
-      <Label style={{ fontSize: "1.5rem" }} for="email">
+      <Label style={{ fontSize: "1.5rem" }} for="ruc4">
         Ruc #4
       </Label>
       <Input
@@ -105,7 +105,7 @@ const DropDownRuc = ({ props }) => {
   );
   const ruc5 = (
     <FormGroup>
-      <Label style={{ fontSize: "1.5rem" }} for="email">
+      <Label style={{ fontSize: "1.5rem" }} for="ruc5">
         Ruc #5
       </Label>
       <Input
@@ -128,23 +128,24 @@ const DropDownRuc = ({ props }) => {
       </p>
     </FormGroup>
   );
+
   return (
     <div>
-      {props.values.selectRuc === "1" ? <Fragment>{ruc1}</Fragment> : null}
-      {props.values.selectRuc === "2" ? (
+      {props.values.selectRuc === "ruc1" ? ruc1 : null}
+      {props.values.selectRuc === "ruc2" ? (
         <Fragment>
           {ruc1}
           {ruc2}
         </Fragment>
       ) : null}
-      {props.values.selectRuc === "3" ? (
+      {props.values.selectRuc === "ruc3" ? (
         <Fragment>
           {ruc1}
           {ruc2}
           {ruc3}
         </Fragment>
       ) : null}
-      {props.values.selectRuc === "4" ? (
+      {props.values.selectRuc === "ruc4" ? (
         <Fragment>
           {ruc1}
           {ruc2}
@@ -152,7 +153,7 @@ const DropDownRuc = ({ props }) => {
           {ruc4}
         </Fragment>
       ) : null}
-      {props.values.selectRuc === "5" ? (
+      {props.values.selectRuc === "ruc5" ? (
         <Fragment>
           {ruc1}
           {ruc2}

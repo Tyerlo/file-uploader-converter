@@ -21,7 +21,7 @@ const ProductCard = ({ product }) => {
       .add({
         price: priceId,
         collect_shipping_address: true,
-        success_url: window.location.origin,
+        success_url: "http://localhost:8000/registerRuc",
         cancel_url: window.location.origin
       });
 
