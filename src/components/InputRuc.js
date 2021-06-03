@@ -10,8 +10,8 @@ import firebase from "gatsby-plugin-firebase";
 
 const InputRuc = ({ product, hideRuc }) => {
 	const [loading, setLoading] = useState(false);
-
 	const [user, loadingFirebase, error] = useAuthState(firebase);
+
 	const subscribe = async (priceId, values) => {
 		setLoading(loadingFirebase);
 
@@ -58,7 +58,7 @@ const InputRuc = ({ product, hideRuc }) => {
 					ruc5: ""
 				}}
 				onSubmit={(values) => {
-					return product && product.prices.map((p) => subscribe(p.id, values));
+					product.prices.map((p) => subscribe(p.id.toString(), values));
 				}}
 				enableReinitialize
 			>
@@ -75,7 +75,6 @@ const InputRuc = ({ product, hideRuc }) => {
 						</ModalBody>
 						<ModalFooter>
 							<button
-								// key={p.id}
 								disabled={loading}
 								type="submit"
 								className="btn btn--dark"

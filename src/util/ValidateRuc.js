@@ -12,7 +12,7 @@ export const validateRuc = Yup.object({
 	ruc2: Yup.string()
 		.notRequired()
 		.when("selectRuc", {
-			is: (val) => val === "ruc1",
+			is: (val) => val === "Plan 1",
 			otherwise: Yup.string().required("Ruc #2 requerido")
 		})
 		.matches(/^[0-9]+$/, "Solo numeros")
@@ -21,7 +21,7 @@ export const validateRuc = Yup.object({
 	ruc3: Yup.string()
 		.notRequired()
 		.when("selectRuc", {
-			is: (val) => val === "ruc1" || val === "ruc2",
+			is: (val) => val === "Plan 2" || val === "Plan 3",
 			otherwise: Yup.string().required("Ruc #3 requerido")
 		})
 		.matches(/^[0-9]+$/, "Solo numeros")
@@ -30,7 +30,7 @@ export const validateRuc = Yup.object({
 	ruc4: Yup.string()
 		.notRequired()
 		.when("selectRuc", {
-			is: (val) => val === "ruc1" || val === "ruc2" || val === "ruc3",
+			is: (val) => val === "Plan 1" || val === "Plan 2" || val === "Plan 3",
 			otherwise: Yup.string().required("Ruc #4 requerido")
 		})
 		.matches(/^[0-9]+$/, "Solo numeros")
@@ -40,7 +40,10 @@ export const validateRuc = Yup.object({
 		.notRequired()
 		.when("selectRuc", {
 			is: (val) =>
-				val === "ruc1" || val === "ruc2" || val === "ruc3" || val === "ruc4",
+				val === "Plan 1" ||
+				val === "Plan 2" ||
+				val === "Plan 3" ||
+				val === "Plan 4",
 			otherwise: Yup.string().required("Ruc #5 requerido")
 		})
 		.matches(/^[0-9]+$/, "Solo numeros")
