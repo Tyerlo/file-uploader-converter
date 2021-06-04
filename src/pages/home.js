@@ -14,6 +14,8 @@ const Home = () => {
 
 	const [user, loading, error] = useAuthState(firebase);
 
+	const [planRuc, setPlanRuc] = useState([]);
+
 	const handleLogout = async (e) => {
 		await firebase.auth().signOut();
 	};
@@ -21,7 +23,7 @@ const Home = () => {
 
 	const loginToggle = () => setLoginModal(!loginModal);
 
-	const [planRuc, setPlanRuc] = useState([]);
+	console.log(planRuc);
 	useEffect(() => {
 		if (user) {
 			firebase
@@ -34,7 +36,7 @@ const Home = () => {
 					// In this implementation we only expect one active or trialing subscription to exist.
 					const doc = snapshot.docs[0];
 
-					setPlanRuc(doc.data());
+					setPlanRuc(doc && doc.data());
 				});
 		}
 	}, [user]);
@@ -70,13 +72,16 @@ const Home = () => {
 				)}
 			</header>
 			<main>
-				{user && user.emailVerified ? (
+				{user && user.emailVerified && !planRuc ? (
 					<div className="header__drop-zone">
 						<Products />
 					</div>
+				) : user &&
+				  user.emailVerified &&
+				  planRuc &&
+				  planRuc.status === "active" ? (
+					<UploadFiles />
 				) : null}
-				{/**planRuc if they have a plan show Uploadfiles */}
-				{/* <UploadFiles /> */}
 			</main>
 
 			<Footer />
