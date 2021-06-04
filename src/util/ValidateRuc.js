@@ -21,7 +21,7 @@ export const validateRuc = Yup.object({
 	ruc3: Yup.string()
 		.notRequired()
 		.when("selectRuc", {
-			is: (val) => val === "Plan 2" || val === "Plan 3",
+			is: (val) => val === "Plan 1" || val === "Plan 2",
 			otherwise: Yup.string().required("Ruc #3 requerido")
 		})
 		.matches(/^[0-9]+$/, "Solo numeros")
