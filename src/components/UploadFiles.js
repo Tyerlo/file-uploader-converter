@@ -5,147 +5,156 @@ import { Fragment } from "react";
 import { readAllFiles } from "../util/ReadFiles";
 import firebase from "gatsby-plugin-firebase";
 import ShowUserRuc from "../components/ShowUserRuc";
+import useAuthState from "../context/auth";
+
 const UploadFiles = () => {
-  const [fileContent, setFileContent] = useState([]);
-  const [files, setFilesUpload] = useState([]);
-  const [users, setUsers] = useState([]);
+	const [fileContent, setFileContent] = useState([]);
+	const [files, setFilesUpload] = useState([]);
+	const [registredRuc, setRegistredRuc] = useState([]);
+	const [user] = useAuthState(firebase);
 
-  const onDrop = useCallback(
-    async (acceptedFiles) => {
-      const allFiles = [...files, ...acceptedFiles];
-      setFilesUpload(allFiles);
+	const onDrop = useCallback(
+		async (acceptedFiles) => {
+			const allFiles = [...files, ...acceptedFiles];
+			setFilesUpload(allFiles);
 
-      return readAllFiles(allFiles, setFileContent);
-    },
-    [files]
-  );
+			return readAllFiles(allFiles, setFileContent);
+		},
+		[files]
+	);
 
-  const { fileRejections, getRootProps, getInputProps } = useDropzone({
-    onDrop,
-    maxFiles: 100,
-    accept: "text/xml"
-  });
+	const { fileRejections, getRootProps, getInputProps } = useDropzone({
+		onDrop,
+		maxFiles: 100,
+		accept: "text/xml"
+	});
 
-  const removeAll = () => {
-    setFileContent([]);
-    setFilesUpload([]);
-  };
+	const removeAll = () => {
+		setFileContent([]);
+		setFilesUpload([]);
+	};
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const response = firebase.firestore().collection("users");
-      const data = await response.get();
+	useEffect(() => {
+		const fetchUsers = async () => {
+			if (user) {
+				const rucRef = firebase
+					.firestore()
+					.collection("users")
+					.doc(user.uid)
+					.collection("checkout_sessions");
 
-      data.forEach((items) => {
-        setUsers({ ...items.data() });
-      });
-    };
-    fetchUsers();
-  }, []);
+				const snapShot = await await rucRef.get();
+				snapShot.forEach((doc) => {
+					setRegistredRuc(doc.data());
+				});
+			}
+		};
+		fetchUsers();
+	}, [user]);
 
-  const ruc = fileContent.map((file) =>
-    file
-      ? (
-          (
-            (((file.autorizacion || {}).comprobante || {}).factura || {})
-              .infoTributaria || {}
-          ).ruc || {}
-        )._text || {}
-      : null
-  );
+	const ruc = fileContent.map((file) =>
+		file
+			? (
+					(
+						(((file.autorizacion || {}).comprobante || {}).factura || {})
+							.infoTributaria || {}
+					).ruc || {}
+			  )._text || {}
+			: null
+	);
 
-  const isRucSame = () => {
-    if (ruc.every((item) => users.ruc.includes(item))) {
-      return true;
-    }
+	const isRucSame = () => {
+		if (ruc.every((item) => registredRuc.ruc.includes(item))) {
+			return true;
+		}
 
-    if (ruc.filter((item) => !users.ruc.includes(item))) {
-      return false;
-    }
-  };
+		if (ruc.filter((item) => !registredRuc.ruc.includes(item))) {
+			return false;
+		}
+	};
 
-  const notValidRuc = ruc.filter((item) => !users.ruc.includes(item));
-  const isValidRuc = ruc.filter((item) => users.ruc.includes(item));
+	const notValidRuc = ruc.filter((item) => !registredRuc.ruc.includes(item));
+	const isValidRuc = ruc.filter((item) => registredRuc.ruc.includes(item));
 
-  return (
-    <Fragment>
-      <section className="section-upload">
-        <div {...getRootProps({ className: "dropzone" })}>
-          <input {...getInputProps()} />
+	return (
+		<Fragment>
+			<section className="section-upload">
+				<div {...getRootProps({ className: "dropzone" })}>
+					<input {...getInputProps()} />
 
-          <p>
-            <span className="icon">
-              <i className="fas fa-file-upload"></i>
-            </span>
-          </p>
-          <em>Subir archivos *.xml</em>
-        </div>
+					<p>
+						<span className="icon">
+							<i className="fas fa-file-upload"></i>
+						</span>
+					</p>
+					<em>Subir archivos *.xml</em>
+				</div>
 
-        <div className="rucs-register">
-          <ShowUserRuc rucs={users} />
-        </div>
-      </section>
+				<div className="rucs-register">
+					<ShowUserRuc rucs={registredRuc} />
+				</div>
+			</section>
 
-      <section className="section-listing">
-        {fileRejections.length > 100 ? (
-          <div className="heading-list">
-            <h4 className="heading-list--list">
-              <p className="text-danger">
-                <i className="fas fa-times mr-1" />
-                Subiste {fileRejections.length} archivos. maximo permitido 100
-                archivos
-              </p>
-            </h4>
-          </div>
-        ) : null}
+			<section className="section-listing">
+				{fileRejections.length > 100 ? (
+					<div className="heading-list">
+						<h4 className="heading-list--list">
+							<p className="text-danger">
+								<i className="fas fa-times mr-1" />
+								Subiste {fileRejections.length} archivos. maximo permitido 100
+								archivos
+							</p>
+						</h4>
+					</div>
+				) : null}
 
-        {files.length > 0 && isRucSame() === true ? (
-          <Fragment>
-            <div className="heading-list">
-              <h4 className="heading-list--list">
-                Subiste {files.length} archivo
-              </h4>
-            </div>
-            <div className="list">
-              <ul>
-                {isValidRuc.map((file, index) => (
-                  <li key={index}>{file}</li>
-                ))}
-              </ul>
-            </div>
-          </Fragment>
-        ) : files.length > 0 && isRucSame() === false ? (
-          <Fragment>
-            <div className="text-danger">
-              <i className="fas fa-times mr-1" />
-              El archivos no corresponde al registrado
-              <div className="list">
-                <ul>
-                  {notValidRuc.map((file, index) => (
-                    <li key={index}>{file}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            <div className="d-flex justify-content-center align-items-center mt-4 mb-4">
-              <button className=" btn btn--dark" onClick={removeAll}>
-                Borrar
-              </button>
-            </div>
-          </Fragment>
-        ) : null}
+				{files.length > 0 && isRucSame() === true ? (
+					<Fragment>
+						<div className="heading-list">
+							<h4 className="heading-list--list">
+								Subiste {files.length} archivo
+							</h4>
+						</div>
+						<div className="list">
+							<ul>
+								{isValidRuc.map((file, index) => (
+									<li key={index}>{file}</li>
+								))}
+							</ul>
+						</div>
+					</Fragment>
+				) : files.length > 0 && isRucSame() === false ? (
+					<Fragment>
+						<div className="text-danger">
+							<i className="fas fa-times mr-1" />
+							El archivos no corresponde al registrado
+							<div className="list">
+								<ul>
+									{notValidRuc.map((file, index) => (
+										<li key={index}>{file}</li>
+									))}
+								</ul>
+							</div>
+						</div>
+						<div className="d-flex justify-content-center align-items-center mt-4 mb-4">
+							<button className=" btn btn--dark" onClick={removeAll}>
+								Borrar
+							</button>
+						</div>
+					</Fragment>
+				) : null}
 
-        {typeof fileContent !== "undefined" &&
-        fileContent.length > 0 &&
-        isRucSame() === true ? (
-          <SaveFileName
-            files={files}
-            data={fileContent}
-            removeAll={removeAll}
-          />
-        ) : null}
-      </section>
-    </Fragment>
-  );
+				{typeof fileContent !== "undefined" &&
+				fileContent.length > 0 &&
+				isRucSame() === true ? (
+					<SaveFileName
+						files={files}
+						data={fileContent}
+						removeAll={removeAll}
+					/>
+				) : null}
+			</section>
+		</Fragment>
+	);
 };
 export default UploadFiles;
