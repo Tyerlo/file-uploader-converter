@@ -23,7 +23,6 @@ const Home = () => {
 
 	const loginToggle = () => setLoginModal(!loginModal);
 
-	console.log(planRuc);
 	useEffect(() => {
 		if (user) {
 			firebase
