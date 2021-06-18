@@ -14,11 +14,31 @@
 	&__ws {
 		font-size: 1.5rem;
 		position: fixed;
-		top: 0;
-		bottom: 0;
-		width: 100vw; /* viewport width */
-		height: 100vh; /* viewport height */
-		overflow-y: scroll;
-		overflow-x: hidden;
+		bottom: 5rem;
+		left: 95rem;
+		max-width: 100%;
+		width: 30rem;
+		margin: -4rem auto;
+		padding: 0;
+		// @media (min-width: 300px) {
+		// 	right: 30%;
+		// 	margin-right: 0;
+		// }
+		@include respond(phone) {
+			right: 50%;
+			margin-right: -10rem;
+		}
+		@include respond(tab-port) {
+			right: 50%;
+			margin-right: -35rem;
+		}
+		@include respond(tab-land) {
+			right: 50%;
+			margin-right: -30rem;
+		}
+		@include respond(big-desktop) {
+			right: 50%;
+			margin-right: -55rem;
+		}
 	}
 }

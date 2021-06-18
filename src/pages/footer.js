@@ -1,8 +1,6 @@
 import React from "react";
 import WhatsAppWidget from "react-whatsapp-widget";
-import "react-whatsapp-widget/dist/index.css";
 const Footer = () => {
-	//TODO fix so they can contact you and
 	//*also test the whole application once
 	//*see if you can get a email when paying with stripe
 	return (

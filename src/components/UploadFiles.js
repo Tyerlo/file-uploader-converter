@@ -96,6 +96,17 @@ const UploadFiles = () => {
 			</section>
 
 			<section className="section-listing">
+				{fileRejections.length > 100 ? (
+					<div className="heading-list">
+						<h4 className="heading-list--list">
+							<p className="text-danger">
+								<i className="fas fa-times mr-1" />
+								Subiste {fileRejections.length} archivos. maximo permitido 100
+								archivos
+							</p>
+						</h4>
+					</div>
+				) : null}
 				{files.length > 0 && isRucSame() === true ? (
 					<Fragment>
 						<div className="heading-list">
