@@ -7,6 +7,7 @@ import Register from "../pages/register";
 import LoginPage from "../pages/loginPage";
 import Products from "../components/Products";
 import DropDownMenu from "../components/DropDownMenu";
+import WhatsAppWidget from "react-whatsapp-widget";
 
 const Home = () => {
 	const [modal, setModal] = useState(false);
@@ -82,7 +83,17 @@ const Home = () => {
 					<UploadFiles />
 				) : null}
 			</main>
-
+			{user && user.emailVerified ? (
+				<div className="footer__ws">
+					<WhatsAppWidget
+						phoneNumber="+46736548775"
+						textReplyTime="Normalmente responde en un día"
+						message="Hola! Qué podemos hacer por ti?"
+						companyName="Apoyo"
+						sendButton="Enviar"
+					/>
+				</div>
+			) : null}
 			<Footer />
 		</div>
 	);
