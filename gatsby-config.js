@@ -1,6 +1,15 @@
-require("dotenv").config({
-  path: `.env.${process.env.NODE_ENV}`,
-})
+// require("dotenv").config({
+//   path: `.env.${process.env.NODE_ENV}`,
+// })
+if (process.env.development) {
+  require("dotenv").config({
+    path: `.env.${process.env.NODE_ENV}.development`,
+  })
+} else {
+  require("dotenv").config({
+    path: `.env.${process.env.NODE_ENV}`,
+  })
+}
 
 module.exports = {
   siteMetadata: {
@@ -27,7 +36,7 @@ module.exports = {
       resolve: `gatsby-source-stripe`,
       options: {
         objects: ["Price"],
-        secretKey: process.env.GATSBY_STRIPE_SECRET_KEY,
+        secretKey: process.env.STRIPE_SECRET_KEY,
         downloadFiles: false
       }
     }
