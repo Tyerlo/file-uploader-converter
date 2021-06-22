@@ -4,7 +4,7 @@
   },
   "hosting": [
     {
-      "target": "production",
+      "target": "development",
       "public": "public",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
     }

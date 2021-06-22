@@ -8,7 +8,7 @@ import LoginPage from "../pages/loginPage";
 import Products from "../components/Products";
 import DropDownMenu from "../components/DropDownMenu";
 import WhatsAppWidget from "react-whatsapp-widget";
-
+//TODO set up a dev enivroment and a prod enviroment with diffrent databases
 const Home = () => {
 	const [modal, setModal] = useState(false);
 	const [loginModal, setLoginModal] = useState(false);
