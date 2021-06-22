@@ -78,7 +78,7 @@ const LoginPage = ({ loginToggle, modal, setModal }) => {
 										onChange={handleChange}
 										style={{ fontSize: "1.5rem" }}
 										type="email"
-										value={data.email}
+										value={data.email || ""}
 										name="email"
 									/>
 								</FormGroup>
@@ -90,7 +90,7 @@ const LoginPage = ({ loginToggle, modal, setModal }) => {
 										onChange={handleChange}
 										style={{ fontSize: "1.5rem" }}
 										type="password"
-										value={data.passwordOne}
+										value={data.passwordOne || ""}
 										name="passwordOne"
 									/>
 								</FormGroup>

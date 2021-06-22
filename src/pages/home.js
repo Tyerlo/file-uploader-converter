@@ -13,7 +13,7 @@ const Home = () => {
 	const [modal, setModal] = useState(false);
 	const [loginModal, setLoginModal] = useState(false);
 
-	const [user, loading, error] = useAuthState(firebase);
+	const [user, loading] = useAuthState(firebase);
 
 	const [planRuc, setPlanRuc] = useState([]);
 
@@ -49,7 +49,7 @@ const Home = () => {
 						<span className="heading-primary--sub">Empezar ahora</span>
 					</h1>
 				</div>
-				{user && user.emailVerified ? (
+				{user && user.emailVerified && !loading ? (
 					<div className="btn--user-info">
 						<DropDownMenu handleLogout={handleLogout} />
 						<h1 className="heading-primary">
@@ -72,7 +72,7 @@ const Home = () => {
 				)}
 			</header>
 			<main>
-				{user && user.emailVerified && !planRuc ? (
+				{user && user.emailVerified && !loading && !planRuc ? (
 					<div className="header__drop-zone">
 						<Products />
 					</div>
@@ -83,7 +83,7 @@ const Home = () => {
 					<UploadFiles />
 				) : null}
 			</main>
-			{user && user.emailVerified ? (
+			{user && user.emailVerified && !loading ? (
 				<div className="footer__ws">
 					<WhatsAppWidget
 						phoneNumber="+46736548775"
