@@ -30,7 +30,6 @@ module.exports = {
         objects: ["Price"],
         secretKey: process.env.GATSBY_STRIPE_SECRET_KEY,
         downloadFiles: false,
-        async: true
       }
     }
   ]
