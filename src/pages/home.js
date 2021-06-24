@@ -23,7 +23,7 @@ const Home = () => {
 	const toggle = () => setModal(!modal);
 
 	const loginToggle = () => setLoginModal(!loginModal);
-	console.log(`${process.env.GATSBY_STRIPE_SECRET_KEY}`);
+
 	useEffect(() => {
 		if (user) {
 			firebase
