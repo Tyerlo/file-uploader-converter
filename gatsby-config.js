@@ -1,7 +1,7 @@
 require("dotenv").config({
 	path: `.env.${process.env.NODE_ENV}`
 });
-
+//TODO only fix secret key
 module.exports = {
 	siteMetadata: {
 		title: "siteconverter"
@@ -26,7 +26,7 @@ module.exports = {
 			resolve: `gatsby-source-stripe`,
 			options: {
 				objects: ["Price"],
-				secretKey: `${process.env.GATSBY_STRIPE_SECRET_KEY}`,
+				secretKey: process.env.GATSBY_STRIPE_SECRET_KEY,
 				downloadFiles: false
 			}
 		}
