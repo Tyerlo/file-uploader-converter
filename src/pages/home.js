@@ -17,7 +17,7 @@ const Home = () => {
 
 	const [planRuc, setPlanRuc] = useState([]);
 
-	const handleLogout = async (e) => {
+	const handleLogout = async () => {
 		await firebase.auth().signOut();
 	};
 	const toggle = () => setModal(!modal);
