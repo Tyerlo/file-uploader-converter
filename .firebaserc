@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "file-upload-converter"
+    "file-uploader": "file-upload-converter"
   },
   "targets": {
     "file-upload-converter": {
