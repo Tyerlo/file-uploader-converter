@@ -35,13 +35,19 @@ executors:
 
 jobs:
   build-deploy-test:
-    executor: node12
+    executors:
+    node12:
+    docker:
+      - image: circleci/node:12
     steps:
       - build
       - deploy:
           env: test"
   build-deploy-production:
-    executor: node12
+    executors:
+    node12:
+    docker:
+      - image: circleci/node:12
     steps:
       - build
       - deploy:
