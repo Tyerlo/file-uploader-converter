@@ -1,7 +1,7 @@
 require("dotenv").config({
 	path: `.env.${process.env.NODE_ENV}`
 });
-//TODO only fix secret key
+//TODO fix somehting with env variable, not working
 
 module.exports = {
 	siteMetadata: {
@@ -13,7 +13,7 @@ module.exports = {
 			resolve: "gatsby-plugin-firebase",
 			options: {
 				credentials: {
-					apiKey: process.env.apiKey,
+					apiKey: `${process.env.apiKey}`,
 					authDomain: process.env.authDomain,
 					projectId: process.env.projectId,
 					storageBucket: process.env.storageBucket,
