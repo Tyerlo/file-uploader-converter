@@ -1,8 +1,7 @@
-// require("dotenv").config({
-// 	path: `.env.${process.env.NODE_ENV}`
-// });
+require("dotenv").config({
+	path: `.env.${process.env.NODE_ENV}`
+});
 //TODO fix somehting with env variable, not working
-require("dotenv").config();
 
 module.exports = {
 	siteMetadata: {
@@ -15,12 +14,12 @@ module.exports = {
 			options: {
 				credentials: {
 					apiKey: `${process.env.GATSBY_apiKey}`,
-					authDomain: process.env.GATSBY_authDomain,
-					projectId: process.env.GATSBY_projectId,
-					storageBucket: process.env.GATSBY_storageBucket,
-					messagingSenderId: process.env.GATSBY_messagingSenderId,
-					appId: process.env.GATSBY_appId,
-					measurementId: process.env.GATSBY_measurementId
+					authDomain: `${process.env.GATSBY_authDomain}`,
+					projectId: `${process.env.GATSBY_projectId}`,
+					storageBucket: `${process.env.GATSBY_storageBucket}`,
+					messagingSenderId: `${process.env.GATSBY_messagingSenderId}`,
+					appId: `${process.env.GATSBY_appId}`,
+					measurementId: `${process.env.GATSBY_measurementId}`
 				}
 			}
 		},
