@@ -1,7 +1,6 @@
 require("dotenv").config({
 	path: `.env.${process.env.NODE_ENV}`
 });
-//TODO fix somehting with env variable, not working
 
 module.exports = {
 	siteMetadata: {
