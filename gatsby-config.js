@@ -14,7 +14,7 @@ module.exports = {
 			resolve: "gatsby-plugin-firebase",
 			options: {
 				credentials: {
-					apiKey: process.env.GATSBY_apiKey,
+					apiKey: `${process.env.GATSBY_apiKey}`,
 					authDomain: process.env.GATSBY_authDomain,
 					projectId: process.env.GATSBY_projectId,
 					storageBucket: process.env.GATSBY_storageBucket,
