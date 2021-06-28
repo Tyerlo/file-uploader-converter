@@ -1,6 +1,6 @@
-require("dotenv").config({
-	path: `.env.${process.env.NODE_ENV}`
-});
+// require("dotenv").config({
+// 	path: `.env.${process.env.NODE_ENV}`
+// });
 //TODO fix somehting with env variable, not working
 
 module.exports = {
@@ -27,7 +27,7 @@ module.exports = {
 			resolve: `gatsby-source-stripe`,
 			options: {
 				objects: ["Price"],
-				secretKey: "${process.env.GATSBY_STRIPE_SECRET_KEY}",
+				secretKey: process.env.GATSBY_STRIPE_SECRET_KEY,
 				downloadFiles: false
 			}
 		}
