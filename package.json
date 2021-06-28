@@ -21,7 +21,7 @@
     "bootstrap": "^4.6.0",
     "dateformat": "^4.5.1",
     "dotenv": "^8.6.0",
-    "firebase": "^8.6.2",
+    "firebase": "^7.24.0",
     "formik": "^2.2.8",
     "gatsby": "^3.0.1",
     "gatsby-plugin-firebase": "^0.2.0-beta.4",
@@ -40,6 +40,6 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
-    "firebase-tools": "^9.11.0"
+    "firebase-tools": "^7.16.2"
   }
 }

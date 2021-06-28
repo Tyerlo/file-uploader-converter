@@ -12,13 +12,13 @@ module.exports = {
 			resolve: "gatsby-plugin-firebase",
 			options: {
 				credentials: {
-					apiKey: `${process.env.GATSBY_apiKey}`,
-					authDomain: `${process.env.GATSBY_authDomain}`,
-					projectId: `${process.env.GATSBY_projectId}`,
-					storageBucket: `${process.env.GATSBY_storageBucket}`,
-					messagingSenderId: `${process.env.GATSBY_messagingSenderId}`,
-					appId: `${process.env.GATSBY_appId}`,
-					measurementId: `${process.env.GATSBY_measurementId}`
+					apiKey: process.env.GATSBY_apiKey,
+					authDomain: process.env.GATSBY_authDomain,
+					projectId: process.env.GATSBY_projectId,
+					storageBucket: process.env.GATSBY_storageBucket,
+					messagingSenderId: process.env.GATSBY_messagingSenderId,
+					appId: process.env.GATSBY_appId,
+					measurementId: process.env.GATSBY_measurementId
 				}
 			}
 		},
@@ -26,8 +26,7 @@ module.exports = {
 			resolve: `gatsby-source-stripe`,
 			options: {
 				objects: ["Price"],
-				secretKey:
-					"sk_test_51Ie22JB8jDt7RkIIV37jB1XecKeYHMGyEuougyUjp6O7jffWsgiqRYdrzELAifueRf5kDVnoQyt8twBlbccc9hc700GPy4xZ3x",
+				secretKey: process.env.GATSBY_STRIPE_SECRET_KEY,
 				downloadFiles: false
 			}
 		}
