@@ -3,8 +3,7 @@ on:
   push:
     branches:
       - master
-env:
-  GATSBY_STRIPE_SECRET_KEY: ${{secrets.DEVELOPMENT_SECRET}}
+
 jobs:
   build:
     name: Build
