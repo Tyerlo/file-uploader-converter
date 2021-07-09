@@ -10,13 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@master
+        uses: actions/checkout@development
       - name: Install Dependencies
         run: yarn
       - name: Build
         run: yarn build
       - name: Archive Production Artifact
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@development
         with:
           name: public
           path: public
@@ -26,13 +26,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@master
+        uses: actions/checkout@development
       - name: Download Artifact
-        uses: actions/download-artifact@master
+        uses: actions/download-artifact@development
         with:
           name: public
       - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
+        uses: w9jds/firebase-action@development
         with:
           args: deploy --only hosting:development
         env:
