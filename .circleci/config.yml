@@ -1,6 +1,6 @@
-version: 2.1
-executors:
-  node12:
+version: 2
+jobs:
+  build:
     docker:
       - image: circleci/node:12
     working_directory: ~/repo
@@ -21,49 +21,6 @@ executors:
       - run:
           name: Build
           command: yarn build
-          build:
-    deploy:
-      description: "Deploy project to the designated environment"
-      parameters:
-        env:
-        type: string
-        default: "test"
-      steps:
-        - run:
-            name: Firebase Deploy
-            command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --only hosting
-
-jobs:
-  build-deploy-test:
-    executors:
-    node12:
-    docker:
-      - image: circleci/node:12
-    steps:
-      - build
-      - deploy:
-          env: test"
-  build-deploy-production:
-    executors:
-    node12:
-    docker:
-      - image: circleci/node:12
-    steps:
-      - build
-      - deploy:
-          env: "production"
-
-workflows:
-  version: 2
-  test:
-    jobs:
-      - build-deploy-test:
-          filters:
-            branches:
-              only: development
-  production:
-    jobs:
-      - build-deploy-production:
-          filters:
-            branches:
-              only: master
+      - run:
+          name: Firebase Deploy
+          command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --only hosting

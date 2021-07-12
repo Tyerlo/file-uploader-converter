@@ -2,7 +2,7 @@ name: Production Build and Deploy
 on:
   push:
     branches:
-      - release/production
+      - master
 
 jobs:
   build:
@@ -21,6 +21,7 @@ jobs:
           name: public
           path: public
   deploy:
+    requires: -hold
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
