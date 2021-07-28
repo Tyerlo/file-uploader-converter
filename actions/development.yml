@@ -1,22 +1,39 @@
-# name: Development Build and Deploy
-# on:
-#   push:
-#     branches:
-#       - development
+name: Development Build and Deploy
+on:
+  push:
+    branches:
+      - development
 
-# jobs:
-#   development:
-#     name: Build
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout Repo
-#         uses: actions/checkout@development
-#       - name: Install Dependencies
-#         run: yarn
-#       - name: Build
-#         run: yarn build
-#       - name: Archive Development Artifact
-#         uses: actions/upload-artifact@development
-#         with:
-#           name: public
-#           path: public
+jobs:
+  development:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@development
+      - name: Install Dependencies
+        run: yarn
+      - name: Build
+        run: yarn build
+      - name: Archive Development Artifact
+        uses: actions/upload-artifact@development
+        with:
+          name: public
+          path: public
+test:
+  name: Deploy to Development
+  needs: build
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout Repo
+      uses: actions/checkout@development
+    - name: Download Artifact
+      uses: actions/download-artifact@development
+      with:
+        name: public
+    - name: Deploy to Firebase development
+      uses: w9jds/firebase-action@development
+      with:
+        args: deploy --only hosting:development
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FILE_UPLOAD_CONVERTER }}
