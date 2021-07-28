@@ -29,7 +29,7 @@ workflows:
   build_and_deploy:
     jobs:
       - build
-      - test:
+      - development:
           requires:
             - hold
           filters:
@@ -37,7 +37,7 @@ workflows:
               only: development
       - deploy:
           requires:
-            - test
+            - development
         filters:
           branches:
             only: master
