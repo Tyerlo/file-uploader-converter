@@ -20,8 +20,8 @@ jobs:
         with:
           name: public
           path: public
-test:
-  name: Deploy to Development
+development:
+  name: Deploy to development
   needs: build
   runs-on: ubuntu-latest
   steps:
