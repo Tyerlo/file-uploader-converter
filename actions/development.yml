@@ -20,7 +20,7 @@ jobs:
         with:
           name: public
           path: public
-development:
+deploy:
   name: Deploy to development
   needs: build
   runs-on: ubuntu-latest

@@ -29,15 +29,13 @@ workflows:
   build_and_deploy:
     jobs:
       - build
-      - development:
-          requires:
-            - hold
-          filters:
-            branches:
-              only: development
       - deploy:
           requires:
-            - development
-        filters:
-          branches:
-            only: master
+            - build
+      - hold:
+          type: approval
+          requires:
+            - deploy
+      - deploy:
+          requires:
+            - hold
