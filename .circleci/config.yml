@@ -25,13 +25,55 @@ jobs:
           name: Firebase Deploy
           command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --only hosting
 
-    workflows:
-    build_and_deploy:
-      jobs:
-        - build
-        - deploy:
-            requires:
-              - hold
-            filters:
-              branches:
-                only: development
+test:
+  name: Deploy to Development
+  needs: build
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout Repo
+      uses: actions/checkout@development
+    - name: Download Artifact
+      uses: actions/download-artifact@development
+      with:
+        name: public
+    - name: Deploy to Firebase development
+      uses: w9jds/firebase-action@development
+      with:
+        args: deploy --only hosting:development
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FILE_UPLOAD_CONVERTER }}
+
+deploy:
+  name: Deploy
+  needs: build
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout Repo
+      uses: actions/checkout@master
+    - name: Download Artifact
+      uses: actions/download-artifact@master
+      with:
+        name: public
+    - name: Deploy to Firebase production
+      uses: w9jds/firebase-action@master
+      with:
+        args: deploy --only hosting:production
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FILE_UPLOAD_CONVERTER }}
+
+  workflows:
+  build_and_deploy:
+    jobs:
+      - build
+      - test:
+          requires:
+            - hold
+          filters:
+            branches:
+              only: development
+      - deploy:
+          requires:
+            - test
+        filters:
+          branches:
+            only: master
