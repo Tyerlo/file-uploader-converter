@@ -81,7 +81,7 @@ stage:
       FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FILE_UPLOAD_CONVERTER }}
 
 workflows:
-  build_and_deploy:
+  build_stage_approve_deploy:
     jobs:
       - build
       - stage:
