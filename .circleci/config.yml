@@ -28,8 +28,7 @@ jobs:
       - run:
           name: Build
           command: yarn build
-
-test:
+stage:
   docker:
     - image: circleci/node:12
   name: Deploy to development
@@ -95,13 +94,13 @@ workflows:
   build_stage_approve_deploy:
     jobs:
       - build
-      - test:
+      - stage:
           requires:
             - build
       - hold:
           type: approval
           requires:
-            - test
+            - stage
       # - deploy:
       #     requires:
       #       - hold
