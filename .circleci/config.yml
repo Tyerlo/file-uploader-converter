@@ -27,15 +27,26 @@ jobs:
             - ./node_modules
       - run:
           name: Build
-          command: npm run build
+          command: yarn build
 
-stage:
+test:
   docker:
     - image: circleci/node:12
   name: Deploy to development
   needs: build
   runs-on: ubuntu-latest
   steps:
+    - name: Checkout Repo
+      uses: actions/checkout@development
+    - name: Install Dependencies
+      run: yarn
+    - name: Build
+      run: yarn build
+    - name: Archive Development Artifact
+      uses: actions/upload-artifact@development
+      with:
+        name: public
+        path: public
     - name: Checkout Repo
       uses: actions/checkout@development
     - name: Download Artifact
@@ -49,48 +60,48 @@ stage:
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FILE_UPLOAD_CONVERTER }}
 
-deploy:
-  docker:
-    - image: circleci/node:12
-  name: Deploy to production
-  needs: build
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checkout Repo
-      uses: actions/checkout@master
-    - name: Download Artifact
-      uses: actions/download-artifact@master
-      with:
-        name: public
-    - name: Deploy to Firebase production
-      uses: w9jds/firebase-action@master
-      with:
-      args: deploy --only hosting:production
-      env:
-      FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FILE_UPLOAD_CONVERTER }}
-    # - name: Checkout Repo
-    #   uses: actions/checkout@master
-    # - name: Install Dependencies
-    #   run: yarn
-    # - name: Build
-    #   run: yarn build
-    # - name: Archive Production Artifact
-    #   uses: actions/upload-artifact@master
-    #   with:
-    #     name: public
-    #     path: public
+# deploy:
+#   docker:
+#     - image: circleci/node:12
+#   name: Deploy to production
+#   needs: build
+#   runs-on: ubuntu-latest
+#   steps:
+#     - name: Checkout Repo
+#       uses: actions/checkout@master
+#     - name: Download Artifact
+#       uses: actions/download-artifact@master
+#       with:
+#         name: public
+#     - name: Deploy to Firebase production
+#       uses: w9jds/firebase-action@master
+#       with:
+#       args: deploy --only hosting:production
+#       env:
+#       FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FILE_UPLOAD_CONVERTER }}
+# - name: Checkout Repo
+#   uses: actions/checkout@master
+# - name: Install Dependencies
+#   run: yarn
+# - name: Build
+#   run: yarn build
+# - name: Archive Production Artifact
+#   uses: actions/upload-artifact@master
+#   with:
+#     name: public
+#     path: public
 
 workflows:
   build_stage_approve_deploy:
     jobs:
       - build
-      - stage:
+      - test:
           requires:
             - build
       - hold:
           type: approval
           requires:
-            - stage
-      - deploy:
-          requires:
-            - hold
+            - test
+      # - deploy:
+      #     requires:
+      #       - hold
