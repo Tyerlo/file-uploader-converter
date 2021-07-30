@@ -8,8 +8,6 @@ on:
 version: 2
 jobs:
   build:
-    name: Build
-    runs-on: ubuntu-latest
     docker:
       - image: circleci/node:12
     working_directory: ~/repo
@@ -32,6 +30,8 @@ jobs:
           command: npm run build
 
 stage:
+  docker:
+    - image: circleci/node:12
   name: Deploy to development
   needs: build
   runs-on: ubuntu-latest
@@ -50,6 +50,8 @@ stage:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FILE_UPLOAD_CONVERTER }}
 
 deploy:
+  docker:
+    - image: circleci/node:12
   name: Deploy to production
   needs: build
   runs-on: ubuntu-latest
