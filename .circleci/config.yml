@@ -32,22 +32,6 @@ jobs:
     docker:
       - image: circleci/node:12
     steps:
-      - checkout
-        # Download and cache dependencies
-      - restore_cache:
-         keys:
-           - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
-      - run:
-          name: Install Dependencies
-          command: npm install
-      - save_cache:
-          key: v1-npm-deps-{{ checksum "package-lock.json" }}
-          paths:
-            - ./node_modules
-      - run:
-          name: Build
-          command: yarn build
       - run:
           name: Firebase Deploy
           command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --only hosting:development    
@@ -95,6 +79,7 @@ workflows:
           type: approval
           requires:
             - stage
+            - build
       # - deploy:
       #     requires:
       #       - hold
