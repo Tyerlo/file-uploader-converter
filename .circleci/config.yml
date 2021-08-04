@@ -30,34 +30,28 @@ jobs:
           command: yarn build
   stage:
     docker:
-    - image: circleci/node:12
-      name: Deploy to development
-      needs: build
-      runs-on: ubuntu-latest
+      - image: circleci/node:12
     steps:
-    - name: Checkout Repo
-      uses: actions/checkout@development
-    - name: Install Dependencies
-      run: yarn
-    - name: Build
-      run: yarn build
-    - name: Archive Development Artifact
-      uses: actions/upload-artifact@development
-      with:
-        name: public
-        path: public
-    - name: Checkout Repo
-      uses: actions/checkout@development
-    - name: Download Artifact
-      uses: actions/download-artifact@development
-      with:
-        name: public
-    - name: Deploy to Firebase development
-      uses: w9jds/firebase-action@development
-      with:
-        args: deploy --only hosting:development
-      env:
-        FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FILE_UPLOAD_CONVERTER }}    
+      - checkout
+        # Download and cache dependencies
+      - restore_cache:
+         keys:
+           - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - save_cache:
+          key: v1-npm-deps-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Build
+          command: yarn build
+      - run:
+          name: Firebase Deploy
+          command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --only hosting:development    
+   
 # deploy:
 #   docker:
 #     - image: circleci/node:12
