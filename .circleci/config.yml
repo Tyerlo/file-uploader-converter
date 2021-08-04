@@ -1,26 +1,106 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - master
+      - development
+
 version: 2
 jobs:
-    build:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/repo
-        steps:
-            - checkout
-            # Download and cache dependencies
-            - restore_cache:
-                  keys:
-                      - v1-dependencies-{{ checksum "package.json" }}
-                      - v1-dependencies-
-            - run:
-                  name: Install Dependencies
-                  command: npm install
-            - save_cache:
-                  key: v1-npm-deps-{{ checksum "package-lock.json" }}
-                  paths:
-                      - ./node_modules
-            - run:
-                  name: Build
-                  command: yarn build
-            - run:
-                  name: Firebase Deploy
-                  command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --only hosting
+  build:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/repo
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - save_cache:
+          key: v1-npm-deps-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Build
+          command: yarn build
+  stage:
+    docker:
+    - image: circleci/node:12
+      name: Deploy to development
+      needs: build
+      runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@development
+    - name: Install Dependencies
+      run: yarn
+    - name: Build
+      run: yarn build
+    - name: Archive Development Artifact
+      uses: actions/upload-artifact@development
+      with:
+        name: public
+        path: public
+    - name: Checkout Repo
+      uses: actions/checkout@development
+    - name: Download Artifact
+      uses: actions/download-artifact@development
+      with:
+        name: public
+    - name: Deploy to Firebase development
+      uses: w9jds/firebase-action@development
+      with:
+        args: deploy --only hosting:development
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FILE_UPLOAD_CONVERTER }}    
+# deploy:
+#   docker:
+#     - image: circleci/node:12
+#   name: Deploy to production
+#   needs: build
+#   runs-on: ubuntu-latest
+#   steps:
+#     - name: Checkout Repo
+#       uses: actions/checkout@master
+#     - name: Download Artifact
+#       uses: actions/download-artifact@master
+#       with:
+#         name: public
+#     - name: Deploy to Firebase production
+#       uses: w9jds/firebase-action@master
+#       with:
+#       args: deploy --only hosting:production
+#       env:
+#       FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FILE_UPLOAD_CONVERTER }}
+# - name: Checkout Repo
+#   uses: actions/checkout@master
+# - name: Install Dependencies
+#   run: yarn
+# - name: Build
+#   run: yarn build
+# - name: Archive Production Artifact
+#   uses: actions/upload-artifact@master
+#   with:
+#     name: public
+#     path: public
+
+workflows:
+  version: 2
+  build_stage_approve_deploy:
+    jobs:
+      - build
+      - stage:
+          requires:
+            - build
+      - hold:
+          type: approval
+          requires:
+            - stage
+      # - deploy:
+      #     requires:
+      #       - hold
