@@ -21,7 +21,7 @@ jobs:
            echo $GATSBY_messagingSenderId
            echo $GATSBY_projectId
            echo $GATSBY_STRIPE_PUBLISHABLE_KEY
-           echo GATSBY_STRIPE_SECRET_KEY
+           echo $GATSBY_STRIPE_SECRET_KEY
         # Download and cache dependencies
       - restore_cache:
          keys:
