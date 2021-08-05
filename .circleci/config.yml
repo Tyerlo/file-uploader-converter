@@ -93,6 +93,9 @@ workflows:
           requires:
             - stage
             - build
+          filters:
+            branches:
+              only: development
       - deploy:
           requires:
             - hold
