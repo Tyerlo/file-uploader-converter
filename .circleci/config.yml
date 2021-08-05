@@ -85,20 +85,11 @@ workflows:
       - stage:
           requires:
             - build
-          filters:
-            branches:
-              only: development
       - hold:
           type: approval
           requires:
             - stage
             - build
-          filters:
-            branches:
-              only: development
       - deploy:
           requires:
             - hold
-          filters:
-            branches:
-              only: master
