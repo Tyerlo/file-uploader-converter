@@ -6,27 +6,6 @@ on:
       - development
 version: 2
 jobs:
-  build:
-    docker:
-      - image: circleci/node:12
-    working_directory: ~/repo
-    steps:
-      - checkout
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
-      - run:
-          name: Install Dependencies
-          command: npm install
-      - save_cache:
-          key: v1-npm-deps-{{ checksum "package-lock.json" }}
-          paths:
-            - ./node_modules
-      - run:
-          name: Build
-          command: yarn build
   stage:
     docker:
       - image: circleci/node:12
@@ -91,17 +70,14 @@ workflows:
   version: 2
   build_stage_approve_deploy:
     jobs:
-      - build
       - stage:
          context: 
           - dev-context
-         requires:
-            - build
       - hold:
           type: approval
           requires:
             - stage
-            - build
+        
       #- deploy:
          # requires:
             #- hold
