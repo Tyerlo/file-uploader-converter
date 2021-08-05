@@ -4,7 +4,6 @@ on:
     branches:
       - master
       - development
-
 version: 2
 jobs:
   build:
@@ -33,6 +32,17 @@ jobs:
       - image: circleci/node:12
     steps:
       - checkout
+      - run:
+          name: Echo env var for dev-context
+          command:  |
+           echo $GATSBY_apiKey
+           echo $GATSBY_appId
+           echo $GATSBY_authDomain
+           echo $GATSBY_measurementId
+           echo $GATSBY_messagingSenderId
+           echo $GATSBY_projectId
+           echo $GATSBY_STRIPE_PUBLISHABLE_KEY
+           echo GATSBY_STRIPE_SECRET_KEY
         # Download and cache dependencies
       - restore_cache:
          keys:
@@ -52,29 +62,29 @@ jobs:
           name: Firebase Deploy
           command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --only hosting:development    
    
-  deploy:
-    docker:
-      - image: circleci/node:12
-    steps:
-      - checkout
+  #deploy:
+    #docker:
+      #- image: circleci/node:12
+    #steps:
+      #- checkout
         # Download and cache dependencies
-      - restore_cache:
-         keys:
-           - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
-      - run:
-          name: Install Dependencies
-          command: npm install
-      - save_cache:
-          key: v1-npm-deps-{{ checksum "package-lock.json" }}
-          paths:
-            - ./node_modules
-      - run:
-          name: Build
-          command: yarn build
-      - run:
-          name: Firebase Deploy
-          command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --only hosting:production
+      #- restore_cache:
+         #keys:
+           #- v1-dependencies-{{ checksum "package.json" }}
+            #- v1-dependencies-
+      #- run:
+          #name: Install Dependencies
+          #command: npm install
+     # - save_cache:
+        #  key: v1-npm-deps-{{ checksum "package-lock.json" }}
+       #   paths:
+       #     - ./node_modules
+     # - run:
+         # name: Build
+       #   command: yarn build
+      #- run:
+        #  name: Firebase Deploy
+        #  command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --only hosting:production
 
 
 workflows:
@@ -83,13 +93,15 @@ workflows:
     jobs:
       - build
       - stage:
-          requires:
+         context: 
+          - dev-context
+         requires:
             - build
       - hold:
           type: approval
           requires:
             - stage
             - build
-      - deploy:
-          requires:
-            - hold
+      #- deploy:
+         # requires:
+            #- hold
