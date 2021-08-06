@@ -46,6 +46,17 @@ jobs:
       - image: circleci/node:12
     steps:
       - checkout
+      - run:
+          name: Echo env var for prod-context
+          command:  |
+           echo $GATSBY_apiKey
+           echo $GATSBY_appId
+           echo $GATSBY_authDomain
+           echo $GATSBY_measurementId
+           echo $GATSBY_messagingSenderId
+           echo $GATSBY_projectId
+           echo $GATSBY_STRIPE_PUBLISHABLE_KEY
+           echo $GATSBY_STRIPE_SECRET_KEY
         # Download and cache dependencies
       - restore_cache:
          keys:
