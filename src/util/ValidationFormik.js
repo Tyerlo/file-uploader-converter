@@ -7,7 +7,7 @@ export const validateSchema = Yup.object({
     .required("Por favor, introduzca su contraseña")
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})/,
-      "Debe contener 6 caracteres, una mayúscula, una minúscula, un número y un carácter en mayúsculas y minúsculas"
+      "Debe contener 6 caracteres, una mayúscula, una minúscula, un número y un caracter !@#$%^&*"
     ),
   passwordTwo: Yup.string()
     .required("Por favor, confirmar su contraseña")

@@ -9,7 +9,7 @@
           "file-upload-converter"
         ],
         "production": [
-          "file-upload-converter-prod"
+          "file-uploader-prod"
         ]
       }
     }
