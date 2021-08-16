@@ -82,21 +82,21 @@ workflows:
   build_stage_approve_deploy:
     jobs:
       - stage:
-         filters:
-          branches:
-            only:
-              - development
          context: 
           - dev-context
       - hold:
           type: approval
           requires:
-            - stage     
+            - stage
+          filters:
+           branches:
+            only:
+              - development     
       - deploy:
+          context: prod-context
+          requires:
+            - hold
           filters:
            branches:
             only:
               - master
-          context: prod-context
-          requires:
-            - hold
