@@ -87,16 +87,8 @@ workflows:
       - hold:
           type: approval
           requires:
-            - stage
-          filters:
-           branches:
-            only:
-              - development     
+            - stage   
       - deploy:
           context: prod-context
           requires:
             - hold
-          filters:
-           branches:
-            only:
-              - master
