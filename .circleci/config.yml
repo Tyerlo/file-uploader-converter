@@ -87,8 +87,9 @@ workflows:
       - hold:
           type: approval
           requires:
-            - stage     
+            - stage   
       - deploy:
           context: prod-context
           requires:
             - hold
+            
