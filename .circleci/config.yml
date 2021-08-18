@@ -92,3 +92,8 @@ workflows:
           context: prod-context
           requires:
             - hold
+          filters:
+            branches:
+              only:
+                - master
+            
